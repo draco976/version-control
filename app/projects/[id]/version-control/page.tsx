@@ -252,8 +252,26 @@ export default function VersionControlPage() {
         hasDeletions: true,
         currentSheet: sheets.find(s => s.code === "A2.2")!,
         subcontractorsToNotify: [
-          { trade: "Electrical", reason: "Update lighting plan and fixture placement according to new ceiling layout." },
-          { trade: "Ceilings/Framing", reason: "Remove specified ceiling elements and install new framing as shown." }
+          {
+            trade: "Electrical",
+            reason: "lighting/controls per RCP."
+          },
+          {
+            trade: "Ceilings/Framing",
+            reason: "CEIL-1, soffits, access panels."
+          },
+          {
+            trade: "Mechanical",
+            reason: "diffuser/return locations vs ceiling."
+          },
+          {
+            trade: "Fire Sprinkler",
+            reason: "head layout/spacing."
+          },
+          {
+            trade: "Low-Voltage/FA",
+            reason: "device locations in ceiling."
+          }
         ]
       },
       {
@@ -266,7 +284,26 @@ export default function VersionControlPage() {
         originalSheet: sheets.find(s => s.code === "A2.1" && s.documentId === 6)!,
         currentSheet: sheets.find(s => s.code === "A2.1" && s.documentId === 7)!,
         subcontractorsToNotify: [
-          { trade: "Framing/Drywall", reason: "Modify wall framing to accommodate new closet layout and door configuration." }
+          {
+            trade: "Framing/Drywall",
+            reason: "set wall to 11′-0 5/8″."
+          },
+          {
+            trade: "Electrical",
+            reason: "device spacing on revised walls."
+          },
+          {
+            trade: "HVAC",
+            reason: "diffuser/grille alignment."
+          },
+          {
+            trade: "Fire Sprinkler",
+            reason: "head spacing/coverage."
+          },
+          {
+            trade: "Casework",
+            reason: "adjust closet/built-ins if affected."
+          }
         ]
       },
       {
@@ -277,7 +314,21 @@ export default function VersionControlPage() {
         hasAdditions: true,
         hasDeletions: false,
         originalSheet: sheets.find(s => s.code === "A6.2" && s.documentId === 6)!,
-        currentSheet: sheets.find(s => s.code === "A6.2" && s.documentId === 7)!
+        currentSheet: sheets.find(s => s.code === "A6.2" && s.documentId === 7)!,
+        subcontractorsToNotify: [
+          {
+            trade: "Framing/Drywall",
+            reason: "build per A-2."
+          },
+          {
+            trade: "Electrical",
+            reason: "box/putty pad requirements per A-2."
+          },
+          {
+            trade: "Paint/Finishes",
+            reason: "finish spec per A-2."
+          }
+        ]
       },
       {
         id: 994,
@@ -289,7 +340,18 @@ export default function VersionControlPage() {
         originalSheet: sheets.find(s => s.code === "A9.1" && s.documentId === 6)!,
         currentSheet: sheets.find(s => s.code === "A9.1" && s.documentId === 7)!,
         subcontractorsToNotify: [
-          { trade: "Glazing/Windows", reason: "Install updated window wall assembly per revised specifications and thermal requirements." }
+          {
+            trade: "Glazing/Windows",
+            reason: "fabricate/install per 6/A6.2."
+          },
+          {
+            trade: "Framing/Envelope/Waterproofing",
+            reason: "RO, blocking, and flashing per detail."
+          },
+          {
+            trade: "Drywall/Paint",
+            reason: "interior returns/finishes per 09-04."
+          }
         ]
       }
     ];
@@ -420,32 +482,38 @@ export default function VersionControlPage() {
       </header>
 
       <div className="flex flex-1 flex-col gap-6 p-6">
-        {/* Summary Cards */}
-        <div className="grid gap-4 md:grid-cols-3">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Documents</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{documents.length}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Total Sheets</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{sheets.length}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Comparable Sheets</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{sheetComparisons.length}</div>
-            </CardContent>
-          </Card>
+        {/* Document Cards */}
+        <div className="grid gap-4 md:grid-cols-2">
+          {documents.map((document) => (
+            <Card key={document.id}>
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-blue-600" />
+                      {document.id === 6 ? 'West-Julia-Martin-Construction-Drawings.pdf' : 'Julia-Martin-West-Repairs-Addendum.pdf'}
+                    </CardTitle>
+                    <CardDescription className="mt-1">
+                      {document.id === 6 ? 'Original construction drawings' : 'Updated repairs addendum'}
+                    </CardDescription>
+                  </div>
+                  <Button 
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      const pdfPath = document.id === 6 
+                        ? '/1754595816630-23-0741-West-Julia-Martin-Construction-Drawings.pdf'
+                        : '/1754595866429-23-0741-Julia-Martin-West-Repairs-Addendum.pdf'
+                      window.open(pdfPath, '_blank')
+                    }}
+                  >
+                    <Eye className="h-4 w-4 mr-1" />
+                    View
+                  </Button>
+                </div>
+              </CardHeader>
+            </Card>
+          ))}
         </div>
 
         {/* Side-by-Side PDF Viewer */}
@@ -565,7 +633,7 @@ export default function VersionControlPage() {
           {/* Horizontal scrolling container */}
           <div className="overflow-x-auto pb-4">
             <div className="flex gap-4 min-w-max">
-              {comparisonDiffs.filter(diff => diff.status === 'review').map((diff, index) => (
+              {comparisonDiffs.filter(diff => diff.status === 'review').map((diff) => (
                 <div 
                   key={diff.id}
                   className={`flex-shrink-0 w-80 border rounded-lg bg-white cursor-pointer transition-all hover:shadow-md ${
@@ -609,8 +677,183 @@ export default function VersionControlPage() {
                     <p className="text-xs text-gray-600 line-clamp-3">{diff.description}</p>
                   </div>
 
-                  {/* Continue with rest of change log card content... */}
-                  {/* This is getting too long for one edit, will continue in next edit */}
+                  {/* Preview Image */}
+                  <div className="p-4 pt-3">
+                    {/* Ceiling Plan Preview */}
+                    {diff.currentSheet.code === "A2.2" && (
+                      <div className="aspect-[3/2] bg-gray-100 rounded overflow-hidden">
+                        <img 
+                          src="/removed_ceil.png" 
+                          alt="Level 1 Reflected Ceiling Plan" 
+                          className="w-full h-full object-contain"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    {/* Before/After Comparisons */}
+                    {diff.originalSheet && (
+                      <div className="grid grid-cols-2 gap-2 aspect-[3/1]">
+                        <div className="bg-red-50 rounded overflow-hidden">
+                          <div className="text-xs text-red-700 px-2 py-1 bg-red-100">Before</div>
+                          <div className="aspect-square bg-gray-100 flex items-center justify-center">
+                            <img 
+                              src={diff.title?.includes("Bedroom 1") ? "/OLD_1.png" : 
+                                   diff.title?.includes("Callout Change") ? "/old_2.png" :
+                                   diff.title?.includes("Window Wall") ? "/old_3.png" : "/OLD_1.png"}
+                              alt="Before" 
+                              className="max-w-full max-h-full object-contain"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <div className="bg-green-50 rounded overflow-hidden">
+                          <div className="text-xs text-green-700 px-2 py-1 bg-green-100">After</div>
+                          <div className="aspect-square bg-gray-100 flex items-center justify-center">
+                            <img 
+                              src={diff.title?.includes("Bedroom 1") ? "/NEW_1.png" : 
+                                   diff.title?.includes("Callout Change") ? "/new_2.png" :
+                                   diff.title?.includes("Window Wall") ? "/new_3.png" : "/NEW_1.png"}
+                              alt="After" 
+                              className="max-w-full max-h-full object-contain"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Subcontractors */}
+                  {diff.subcontractorsToNotify && diff.subcontractorsToNotify.length > 0 && (
+                    <div className="px-4 pb-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="text-xs font-medium text-orange-700">Notify Contractors:</div>
+                        <select 
+                          className="text-xs border rounded px-2 py-1 bg-white"
+                          onChange={(e) => {
+                            if (e.target.value && !diff.subcontractorsToNotify?.some(s => s.trade === e.target.value)) {
+                              const updatedDiffs = comparisonDiffs.map(d => 
+                                d.id === diff.id ? { 
+                                  ...d, 
+                                  subcontractorsToNotify: [
+                                    ...(d.subcontractorsToNotify || []),
+                                    { trade: e.target.value, reason: "Review changes and update work accordingly." }
+                                  ]
+                                } : d
+                              )
+                              setComparisonDiffs(updatedDiffs)
+                              e.target.value = ""
+                            }
+                          }}
+                          defaultValue=""
+                        >
+                          <option value="">+ Add Contractor</option>
+                          <option value="Electrical">Electrical</option>
+                          <option value="Framing/Drywall">Framing/Drywall</option>
+                          <option value="Mechanical/HVAC">Mechanical/HVAC</option>
+                          <option value="Fire Sprinkler">Fire Sprinkler</option>
+                          <option value="Plumbing">Plumbing</option>
+                          <option value="Glazing/Windows">Glazing/Windows</option>
+                          <option value="Roofing">Roofing</option>
+                          <option value="Casework">Casework</option>
+                          <option value="Paint/Finishes">Paint/Finishes</option>
+                          <option value="Low-Voltage/FA">Low-Voltage/FA</option>
+                          <option value="Ceilings/Framing">Ceilings/Framing</option>
+                          <option value="Envelope/Waterproofing">Envelope/Waterproofing</option>
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        {diff.subcontractorsToNotify.map((notify, idx) => (
+                          <div key={idx} className="group">
+                            <div className="flex items-start gap-2 bg-orange-50 rounded border border-orange-200 p-2">
+                              <div className="flex-1">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs font-medium text-orange-800">{notify.trade}</span>
+                                  <button
+                                    onClick={() => {
+                                      const updatedDiffs = comparisonDiffs.map(d => 
+                                        d.id === diff.id ? { 
+                                          ...d, 
+                                          subcontractorsToNotify: d.subcontractorsToNotify?.filter((_, index) => index !== idx) || []
+                                        } : d
+                                      )
+                                      setComparisonDiffs(updatedDiffs)
+                                    }}
+                                    className="text-orange-400 hover:text-red-600 transition-colors p-1 hover:bg-red-50 rounded"
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </button>
+                                </div>
+                                <div className="text-xs text-orange-700 mt-1">{notify.reason}</div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Add contractors section if none exist */}
+                  {(!diff.subcontractorsToNotify || diff.subcontractorsToNotify.length === 0) && (
+                    <div className="px-4 pb-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="text-xs font-medium text-gray-600">Notify Contractors:</div>
+                        <select 
+                          className="text-xs border rounded px-2 py-1 bg-white"
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              const updatedDiffs = comparisonDiffs.map(d => 
+                                d.id === diff.id ? { 
+                                  ...d, 
+                                  subcontractorsToNotify: [
+                                    { trade: e.target.value, reason: "Review changes and update work accordingly." }
+                                  ]
+                                } : d
+                              )
+                              setComparisonDiffs(updatedDiffs)
+                              e.target.value = ""
+                            }
+                          }}
+                          defaultValue=""
+                        >
+                          <option value="">+ Add Contractor</option>
+                          <option value="Electrical">Electrical</option>
+                          <option value="Framing/Drywall">Framing/Drywall</option>
+                          <option value="Mechanical/HVAC">Mechanical/HVAC</option>
+                          <option value="Fire Sprinkler">Fire Sprinkler</option>
+                          <option value="Plumbing">Plumbing</option>
+                          <option value="Glazing/Windows">Glazing/Windows</option>
+                          <option value="Roofing">Roofing</option>
+                          <option value="Casework">Casework</option>
+                          <option value="Paint/Finishes">Paint/Finishes</option>
+                          <option value="Low-Voltage/FA">Low-Voltage/FA</option>
+                          <option value="Ceilings/Framing">Ceilings/Framing</option>
+                          <option value="Envelope/Waterproofing">Envelope/Waterproofing</option>
+                        </select>
+                      </div>
+                      <div className="text-xs text-gray-500 italic">No contractors assigned yet</div>
+                    </div>
+                  )}
+
+                  {/* Action Buttons */}
+                  {/* <div className="p-4 pt-0 flex gap-2">
+                    <Button size="sm" className="flex-1 bg-green-600 hover:bg-green-700 text-xs">
+                      ✅ Accept
+                    </Button>
+                    <Button size="sm" variant="destructive" className="flex-1 text-xs">
+                      ❌ Remove
+                    </Button>
+                  </div> */}
                 </div>
               ))}
             </div>
