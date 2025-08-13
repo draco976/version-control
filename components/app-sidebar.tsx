@@ -67,7 +67,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <div className="flex items-center gap-2 px-4 py-2">
           <Building2 className="h-8 w-8 text-blue-600" />
           <div>
-            <h1 className="font-bold text-lg">Concrete Pro</h1>
+            <h1 className="font-bold text-lg">ContextFort</h1>
             <p className="text-xs text-muted-foreground">Drawing Analysis</p>
           </div>
         </div>
