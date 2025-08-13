@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Project {
+  id        Int        @id @default(autoincrement())
+  name      String
+  date      DateTime   @default(now())
+  documents Document[]
+}
+
+model Document {
+  id          Int     @id @default(autoincrement())
+  type        String?
+  path        String
+  category    String?
+  subcategory String?
+  title       String?
+  projectId   Int
+  project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sheets      Sheet[]
+}
+
+model Sheet {
+  id               Int               @id @default(autoincrement())
+  code             String
+  title            String?
+  type             String?
+  page             Int?
+  status           String            @default("not started")
+  svgPath          String?
+  documentId       Int
+  alignmentResults AlignmentResult[]
+  boxes            Box[]
+  distances        Distance[]
+  references       Reference[]
+  document         Document          @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  // Relations for comparison diffs
+  originalDiffs ComparisonDiff[] @relation("OriginalSheet")
+  currentDiffs  ComparisonDiff[] @relation("CurrentSheet")
+}
+
+model ComparisonDiff {
+  id Int @id @default(autoincrement())
+
+  // Sheet references (sufficient since Sheet has documentId)
+  originalSheetId Int
+  currentSheetId  Int
+
+  // Change indicators (boolean flags)
+  hasAdditions Boolean @default(false)
+  hasDeletions Boolean @default(false)
+
+  // Bounding boxes for zoom focus
+  originalBbox String? // JSON: {x, y, width, height}
+  currentBbox  String? // JSON: {x, y, width, height}
+
+  // Change details
+  title       String? // Brief title of change
+  description String? // Detailed description
+
+  // Assignment
+  subContractorId Int?
+
+  // Status (for 3-tab system)
+  status String @default("review") // "review", "accepted", "removed"
+
+  // Relations
+  originalSheet Sheet          @relation("OriginalSheet", fields: [originalSheetId], references: [id], onDelete: Cascade)
+  currentSheet  Sheet          @relation("CurrentSheet", fields: [currentSheetId], references: [id], onDelete: Cascade)
+  subContractor SubContractor? @relation(fields: [subContractorId], references: [id])
+
+  @@unique([originalSheetId, currentSheetId])
+}
+
+model SubContractor {
+  id        Int    @id @default(autoincrement())
+  name      String // Person's name
+  tradeName String // Trade category (Electrical, Plumbing, etc.)
+
+  comparisonDiffs ComparisonDiff[]
+}
+
+model Box {
+  id               Int               @id @default(autoincrement())
+  code             String
+  title            String?
+  scale            String?
+  content          String?
+  coordinates      String
+  type             String            @default("figure")
+  shape            String            @default("rectangle")
+  color            String            @default("#FF5722")
+  pageWidth        Int?
+  pageHeight       Int?
+  userModified     Boolean           @default(false)
+  sheetId          Int
+  alignmentResults AlignmentResult[]
+  sheet            Sheet             @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+}
+
+model Reference {
+  id          Int    @id @default(autoincrement())
+  coordinates String
+  code        String
+  sheetCode   String
+  sheetId     Int
+  sheet       Sheet  @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+}
+
+model Distance {
+  id             Int    @id @default(autoincrement())
+  pointA         String
+  pointB         String
+  length         Float
+  pixel_distance Float
+  sheetId        Int
+  sheet          Sheet  @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+}
+
+model AlignmentResult {
+  id            Int      @id @default(autoincrement())
+  sourceBoxId   Int
+  targetSheetId Int
+  translationX  Float
+  translationY  Float
+  scale         Float
+  createdAt     DateTime @default(now())
+  targetSheet   Sheet    @relation(fields: [targetSheetId], references: [id], onDelete: Cascade)
+  sourceBox     Box      @relation(fields: [sourceBoxId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceBoxId, targetSheetId])
+}
