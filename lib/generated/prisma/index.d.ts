@@ -1674,19 +1674,19 @@ export namespace Prisma {
   export type SheetCountOutputType = {
     alignmentResults: number
     boxes: number
+    currentDiffs: number
+    originalDiffs: number
     distances: number
     references: number
-    originalDiffs: number
-    currentDiffs: number
   }
 
   export type SheetCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     alignmentResults?: boolean | SheetCountOutputTypeCountAlignmentResultsArgs
     boxes?: boolean | SheetCountOutputTypeCountBoxesArgs
+    currentDiffs?: boolean | SheetCountOutputTypeCountCurrentDiffsArgs
+    originalDiffs?: boolean | SheetCountOutputTypeCountOriginalDiffsArgs
     distances?: boolean | SheetCountOutputTypeCountDistancesArgs
     references?: boolean | SheetCountOutputTypeCountReferencesArgs
-    originalDiffs?: boolean | SheetCountOutputTypeCountOriginalDiffsArgs
-    currentDiffs?: boolean | SheetCountOutputTypeCountCurrentDiffsArgs
   }
 
   // Custom InputTypes
@@ -1717,15 +1717,8 @@ export namespace Prisma {
   /**
    * SheetCountOutputType without action
    */
-  export type SheetCountOutputTypeCountDistancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DistanceWhereInput
-  }
-
-  /**
-   * SheetCountOutputType without action
-   */
-  export type SheetCountOutputTypeCountReferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ReferenceWhereInput
+  export type SheetCountOutputTypeCountCurrentDiffsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ComparisonDiffWhereInput
   }
 
   /**
@@ -1738,8 +1731,15 @@ export namespace Prisma {
   /**
    * SheetCountOutputType without action
    */
-  export type SheetCountOutputTypeCountCurrentDiffsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ComparisonDiffWhereInput
+  export type SheetCountOutputTypeCountDistancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DistanceWhereInput
+  }
+
+  /**
+   * SheetCountOutputType without action
+   */
+  export type SheetCountOutputTypeCountReferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReferenceWhereInput
   }
 
 
@@ -2911,30 +2911,30 @@ export namespace Prisma {
     id: number | null
     type: string | null
     path: string | null
+    projectId: number | null
     category: string | null
     subcategory: string | null
     title: string | null
-    projectId: number | null
   }
 
   export type DocumentMaxAggregateOutputType = {
     id: number | null
     type: string | null
     path: string | null
+    projectId: number | null
     category: string | null
     subcategory: string | null
     title: string | null
-    projectId: number | null
   }
 
   export type DocumentCountAggregateOutputType = {
     id: number
     type: number
     path: number
+    projectId: number
     category: number
     subcategory: number
     title: number
-    projectId: number
     _all: number
   }
 
@@ -2953,30 +2953,30 @@ export namespace Prisma {
     id?: true
     type?: true
     path?: true
+    projectId?: true
     category?: true
     subcategory?: true
     title?: true
-    projectId?: true
   }
 
   export type DocumentMaxAggregateInputType = {
     id?: true
     type?: true
     path?: true
+    projectId?: true
     category?: true
     subcategory?: true
     title?: true
-    projectId?: true
   }
 
   export type DocumentCountAggregateInputType = {
     id?: true
     type?: true
     path?: true
+    projectId?: true
     category?: true
     subcategory?: true
     title?: true
-    projectId?: true
     _all?: true
   }
 
@@ -3070,10 +3070,10 @@ export namespace Prisma {
     id: number
     type: string | null
     path: string
+    projectId: number
     category: string | null
     subcategory: string | null
     title: string | null
-    projectId: number
     _count: DocumentCountAggregateOutputType | null
     _avg: DocumentAvgAggregateOutputType | null
     _sum: DocumentSumAggregateOutputType | null
@@ -3099,10 +3099,10 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     path?: boolean
+    projectId?: boolean
     category?: boolean
     subcategory?: boolean
     title?: boolean
-    projectId?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     sheets?: boolean | Document$sheetsArgs<ExtArgs>
     _count?: boolean | DocumentCountOutputTypeDefaultArgs<ExtArgs>
@@ -3112,10 +3112,10 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     path?: boolean
+    projectId?: boolean
     category?: boolean
     subcategory?: boolean
     title?: boolean
-    projectId?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
 
@@ -3123,10 +3123,10 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     path?: boolean
+    projectId?: boolean
     category?: boolean
     subcategory?: boolean
     title?: boolean
-    projectId?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
 
@@ -3134,13 +3134,13 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     path?: boolean
+    projectId?: boolean
     category?: boolean
     subcategory?: boolean
     title?: boolean
-    projectId?: boolean
   }
 
-  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "path" | "category" | "subcategory" | "title" | "projectId", ExtArgs["result"]["document"]>
+  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "path" | "projectId" | "category" | "subcategory" | "title", ExtArgs["result"]["document"]>
   export type DocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     sheets?: boolean | Document$sheetsArgs<ExtArgs>
@@ -3163,10 +3163,10 @@ export namespace Prisma {
       id: number
       type: string | null
       path: string
+      projectId: number
       category: string | null
       subcategory: string | null
       title: string | null
-      projectId: number
     }, ExtArgs["result"]["document"]>
     composites: {}
   }
@@ -3595,10 +3595,10 @@ export namespace Prisma {
     readonly id: FieldRef<"Document", 'Int'>
     readonly type: FieldRef<"Document", 'String'>
     readonly path: FieldRef<"Document", 'String'>
+    readonly projectId: FieldRef<"Document", 'Int'>
     readonly category: FieldRef<"Document", 'String'>
     readonly subcategory: FieldRef<"Document", 'String'>
     readonly title: FieldRef<"Document", 'String'>
-    readonly projectId: FieldRef<"Document", 'Int'>
   }
     
 
@@ -4267,11 +4267,11 @@ export namespace Prisma {
     documentId?: boolean
     alignmentResults?: boolean | Sheet$alignmentResultsArgs<ExtArgs>
     boxes?: boolean | Sheet$boxesArgs<ExtArgs>
+    currentDiffs?: boolean | Sheet$currentDiffsArgs<ExtArgs>
+    originalDiffs?: boolean | Sheet$originalDiffsArgs<ExtArgs>
     distances?: boolean | Sheet$distancesArgs<ExtArgs>
     references?: boolean | Sheet$referencesArgs<ExtArgs>
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    originalDiffs?: boolean | Sheet$originalDiffsArgs<ExtArgs>
-    currentDiffs?: boolean | Sheet$currentDiffsArgs<ExtArgs>
     _count?: boolean | SheetCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sheet"]>
 
@@ -4314,11 +4314,11 @@ export namespace Prisma {
   export type SheetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     alignmentResults?: boolean | Sheet$alignmentResultsArgs<ExtArgs>
     boxes?: boolean | Sheet$boxesArgs<ExtArgs>
+    currentDiffs?: boolean | Sheet$currentDiffsArgs<ExtArgs>
+    originalDiffs?: boolean | Sheet$originalDiffsArgs<ExtArgs>
     distances?: boolean | Sheet$distancesArgs<ExtArgs>
     references?: boolean | Sheet$referencesArgs<ExtArgs>
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    originalDiffs?: boolean | Sheet$originalDiffsArgs<ExtArgs>
-    currentDiffs?: boolean | Sheet$currentDiffsArgs<ExtArgs>
     _count?: boolean | SheetCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SheetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4333,11 +4333,11 @@ export namespace Prisma {
     objects: {
       alignmentResults: Prisma.$AlignmentResultPayload<ExtArgs>[]
       boxes: Prisma.$BoxPayload<ExtArgs>[]
+      currentDiffs: Prisma.$ComparisonDiffPayload<ExtArgs>[]
+      originalDiffs: Prisma.$ComparisonDiffPayload<ExtArgs>[]
       distances: Prisma.$DistancePayload<ExtArgs>[]
       references: Prisma.$ReferencePayload<ExtArgs>[]
       document: Prisma.$DocumentPayload<ExtArgs>
-      originalDiffs: Prisma.$ComparisonDiffPayload<ExtArgs>[]
-      currentDiffs: Prisma.$ComparisonDiffPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -4744,11 +4744,11 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     alignmentResults<T extends Sheet$alignmentResultsArgs<ExtArgs> = {}>(args?: Subset<T, Sheet$alignmentResultsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlignmentResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     boxes<T extends Sheet$boxesArgs<ExtArgs> = {}>(args?: Subset<T, Sheet$boxesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    currentDiffs<T extends Sheet$currentDiffsArgs<ExtArgs> = {}>(args?: Subset<T, Sheet$currentDiffsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ComparisonDiffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    originalDiffs<T extends Sheet$originalDiffsArgs<ExtArgs> = {}>(args?: Subset<T, Sheet$originalDiffsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ComparisonDiffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     distances<T extends Sheet$distancesArgs<ExtArgs> = {}>(args?: Subset<T, Sheet$distancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DistancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     references<T extends Sheet$referencesArgs<ExtArgs> = {}>(args?: Subset<T, Sheet$referencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     document<T extends DocumentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DocumentDefaultArgs<ExtArgs>>): Prisma__DocumentClient<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    originalDiffs<T extends Sheet$originalDiffsArgs<ExtArgs> = {}>(args?: Subset<T, Sheet$originalDiffsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ComparisonDiffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    currentDiffs<T extends Sheet$currentDiffsArgs<ExtArgs> = {}>(args?: Subset<T, Sheet$currentDiffsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ComparisonDiffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5228,6 +5228,54 @@ export namespace Prisma {
   }
 
   /**
+   * Sheet.currentDiffs
+   */
+  export type Sheet$currentDiffsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ComparisonDiff
+     */
+    select?: ComparisonDiffSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ComparisonDiff
+     */
+    omit?: ComparisonDiffOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ComparisonDiffInclude<ExtArgs> | null
+    where?: ComparisonDiffWhereInput
+    orderBy?: ComparisonDiffOrderByWithRelationInput | ComparisonDiffOrderByWithRelationInput[]
+    cursor?: ComparisonDiffWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ComparisonDiffScalarFieldEnum | ComparisonDiffScalarFieldEnum[]
+  }
+
+  /**
+   * Sheet.originalDiffs
+   */
+  export type Sheet$originalDiffsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ComparisonDiff
+     */
+    select?: ComparisonDiffSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ComparisonDiff
+     */
+    omit?: ComparisonDiffOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ComparisonDiffInclude<ExtArgs> | null
+    where?: ComparisonDiffWhereInput
+    orderBy?: ComparisonDiffOrderByWithRelationInput | ComparisonDiffOrderByWithRelationInput[]
+    cursor?: ComparisonDiffWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ComparisonDiffScalarFieldEnum | ComparisonDiffScalarFieldEnum[]
+  }
+
+  /**
    * Sheet.distances
    */
   export type Sheet$distancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5273,54 +5321,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ReferenceScalarFieldEnum | ReferenceScalarFieldEnum[]
-  }
-
-  /**
-   * Sheet.originalDiffs
-   */
-  export type Sheet$originalDiffsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ComparisonDiff
-     */
-    select?: ComparisonDiffSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ComparisonDiff
-     */
-    omit?: ComparisonDiffOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ComparisonDiffInclude<ExtArgs> | null
-    where?: ComparisonDiffWhereInput
-    orderBy?: ComparisonDiffOrderByWithRelationInput | ComparisonDiffOrderByWithRelationInput[]
-    cursor?: ComparisonDiffWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ComparisonDiffScalarFieldEnum | ComparisonDiffScalarFieldEnum[]
-  }
-
-  /**
-   * Sheet.currentDiffs
-   */
-  export type Sheet$currentDiffsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ComparisonDiff
-     */
-    select?: ComparisonDiffSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ComparisonDiff
-     */
-    omit?: ComparisonDiffOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ComparisonDiffInclude<ExtArgs> | null
-    where?: ComparisonDiffWhereInput
-    orderBy?: ComparisonDiffOrderByWithRelationInput | ComparisonDiffOrderByWithRelationInput[]
-    cursor?: ComparisonDiffWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ComparisonDiffScalarFieldEnum | ComparisonDiffScalarFieldEnum[]
   }
 
   /**
@@ -5600,9 +5600,9 @@ export namespace Prisma {
     description?: boolean
     subContractorId?: boolean
     status?: boolean
-    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
-    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
     subContractor?: boolean | ComparisonDiff$subContractorArgs<ExtArgs>
+    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
+    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["comparisonDiff"]>
 
   export type ComparisonDiffSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5617,9 +5617,9 @@ export namespace Prisma {
     description?: boolean
     subContractorId?: boolean
     status?: boolean
-    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
-    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
     subContractor?: boolean | ComparisonDiff$subContractorArgs<ExtArgs>
+    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
+    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["comparisonDiff"]>
 
   export type ComparisonDiffSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5634,9 +5634,9 @@ export namespace Prisma {
     description?: boolean
     subContractorId?: boolean
     status?: boolean
-    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
-    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
     subContractor?: boolean | ComparisonDiff$subContractorArgs<ExtArgs>
+    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
+    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["comparisonDiff"]>
 
   export type ComparisonDiffSelectScalar = {
@@ -5655,27 +5655,27 @@ export namespace Prisma {
 
   export type ComparisonDiffOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "originalSheetId" | "currentSheetId" | "hasAdditions" | "hasDeletions" | "originalBbox" | "currentBbox" | "title" | "description" | "subContractorId" | "status", ExtArgs["result"]["comparisonDiff"]>
   export type ComparisonDiffInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
-    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
     subContractor?: boolean | ComparisonDiff$subContractorArgs<ExtArgs>
+    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
+    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }
   export type ComparisonDiffIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
-    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
     subContractor?: boolean | ComparisonDiff$subContractorArgs<ExtArgs>
+    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
+    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }
   export type ComparisonDiffIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
-    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
     subContractor?: boolean | ComparisonDiff$subContractorArgs<ExtArgs>
+    currentSheet?: boolean | SheetDefaultArgs<ExtArgs>
+    originalSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }
 
   export type $ComparisonDiffPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ComparisonDiff"
     objects: {
-      originalSheet: Prisma.$SheetPayload<ExtArgs>
-      currentSheet: Prisma.$SheetPayload<ExtArgs>
       subContractor: Prisma.$SubContractorPayload<ExtArgs> | null
+      currentSheet: Prisma.$SheetPayload<ExtArgs>
+      originalSheet: Prisma.$SheetPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -6083,9 +6083,9 @@ export namespace Prisma {
    */
   export interface Prisma__ComparisonDiffClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    originalSheet<T extends SheetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SheetDefaultArgs<ExtArgs>>): Prisma__SheetClient<$Result.GetResult<Prisma.$SheetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    currentSheet<T extends SheetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SheetDefaultArgs<ExtArgs>>): Prisma__SheetClient<$Result.GetResult<Prisma.$SheetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     subContractor<T extends ComparisonDiff$subContractorArgs<ExtArgs> = {}>(args?: Subset<T, ComparisonDiff$subContractorArgs<ExtArgs>>): Prisma__SubContractorClient<$Result.GetResult<Prisma.$SubContractorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    currentSheet<T extends SheetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SheetDefaultArgs<ExtArgs>>): Prisma__SheetClient<$Result.GetResult<Prisma.$SheetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    originalSheet<T extends SheetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SheetDefaultArgs<ExtArgs>>): Prisma__SheetClient<$Result.GetResult<Prisma.$SheetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11312,8 +11312,8 @@ export namespace Prisma {
     translationY?: boolean
     scale?: boolean
     createdAt?: boolean
-    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
     sourceBox?: boolean | BoxDefaultArgs<ExtArgs>
+    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["alignmentResult"]>
 
   export type AlignmentResultSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11324,8 +11324,8 @@ export namespace Prisma {
     translationY?: boolean
     scale?: boolean
     createdAt?: boolean
-    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
     sourceBox?: boolean | BoxDefaultArgs<ExtArgs>
+    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["alignmentResult"]>
 
   export type AlignmentResultSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11336,8 +11336,8 @@ export namespace Prisma {
     translationY?: boolean
     scale?: boolean
     createdAt?: boolean
-    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
     sourceBox?: boolean | BoxDefaultArgs<ExtArgs>
+    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["alignmentResult"]>
 
   export type AlignmentResultSelectScalar = {
@@ -11352,23 +11352,23 @@ export namespace Prisma {
 
   export type AlignmentResultOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sourceBoxId" | "targetSheetId" | "translationX" | "translationY" | "scale" | "createdAt", ExtArgs["result"]["alignmentResult"]>
   export type AlignmentResultInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
     sourceBox?: boolean | BoxDefaultArgs<ExtArgs>
+    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }
   export type AlignmentResultIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
     sourceBox?: boolean | BoxDefaultArgs<ExtArgs>
+    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }
   export type AlignmentResultIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
     sourceBox?: boolean | BoxDefaultArgs<ExtArgs>
+    targetSheet?: boolean | SheetDefaultArgs<ExtArgs>
   }
 
   export type $AlignmentResultPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AlignmentResult"
     objects: {
-      targetSheet: Prisma.$SheetPayload<ExtArgs>
       sourceBox: Prisma.$BoxPayload<ExtArgs>
+      targetSheet: Prisma.$SheetPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -11772,8 +11772,8 @@ export namespace Prisma {
    */
   export interface Prisma__AlignmentResultClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    targetSheet<T extends SheetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SheetDefaultArgs<ExtArgs>>): Prisma__SheetClient<$Result.GetResult<Prisma.$SheetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     sourceBox<T extends BoxDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BoxDefaultArgs<ExtArgs>>): Prisma__BoxClient<$Result.GetResult<Prisma.$BoxPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    targetSheet<T extends SheetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SheetDefaultArgs<ExtArgs>>): Prisma__SheetClient<$Result.GetResult<Prisma.$SheetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12246,10 +12246,10 @@ export namespace Prisma {
     id: 'id',
     type: 'type',
     path: 'path',
+    projectId: 'projectId',
     category: 'category',
     subcategory: 'subcategory',
-    title: 'title',
-    projectId: 'projectId'
+    title: 'title'
   };
 
   export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
@@ -12463,10 +12463,10 @@ export namespace Prisma {
     id?: IntFilter<"Document"> | number
     type?: StringNullableFilter<"Document"> | string | null
     path?: StringFilter<"Document"> | string
+    projectId?: IntFilter<"Document"> | number
     category?: StringNullableFilter<"Document"> | string | null
     subcategory?: StringNullableFilter<"Document"> | string | null
     title?: StringNullableFilter<"Document"> | string | null
-    projectId?: IntFilter<"Document"> | number
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     sheets?: SheetListRelationFilter
   }
@@ -12475,10 +12475,10 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrderInput | SortOrder
     path?: SortOrder
+    projectId?: SortOrder
     category?: SortOrderInput | SortOrder
     subcategory?: SortOrderInput | SortOrder
     title?: SortOrderInput | SortOrder
-    projectId?: SortOrder
     project?: ProjectOrderByWithRelationInput
     sheets?: SheetOrderByRelationAggregateInput
   }
@@ -12490,10 +12490,10 @@ export namespace Prisma {
     NOT?: DocumentWhereInput | DocumentWhereInput[]
     type?: StringNullableFilter<"Document"> | string | null
     path?: StringFilter<"Document"> | string
+    projectId?: IntFilter<"Document"> | number
     category?: StringNullableFilter<"Document"> | string | null
     subcategory?: StringNullableFilter<"Document"> | string | null
     title?: StringNullableFilter<"Document"> | string | null
-    projectId?: IntFilter<"Document"> | number
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     sheets?: SheetListRelationFilter
   }, "id">
@@ -12502,10 +12502,10 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrderInput | SortOrder
     path?: SortOrder
+    projectId?: SortOrder
     category?: SortOrderInput | SortOrder
     subcategory?: SortOrderInput | SortOrder
     title?: SortOrderInput | SortOrder
-    projectId?: SortOrder
     _count?: DocumentCountOrderByAggregateInput
     _avg?: DocumentAvgOrderByAggregateInput
     _max?: DocumentMaxOrderByAggregateInput
@@ -12520,10 +12520,10 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Document"> | number
     type?: StringNullableWithAggregatesFilter<"Document"> | string | null
     path?: StringWithAggregatesFilter<"Document"> | string
+    projectId?: IntWithAggregatesFilter<"Document"> | number
     category?: StringNullableWithAggregatesFilter<"Document"> | string | null
     subcategory?: StringNullableWithAggregatesFilter<"Document"> | string | null
     title?: StringNullableWithAggregatesFilter<"Document"> | string | null
-    projectId?: IntWithAggregatesFilter<"Document"> | number
   }
 
   export type SheetWhereInput = {
@@ -12540,11 +12540,11 @@ export namespace Prisma {
     documentId?: IntFilter<"Sheet"> | number
     alignmentResults?: AlignmentResultListRelationFilter
     boxes?: BoxListRelationFilter
+    currentDiffs?: ComparisonDiffListRelationFilter
+    originalDiffs?: ComparisonDiffListRelationFilter
     distances?: DistanceListRelationFilter
     references?: ReferenceListRelationFilter
     document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
-    originalDiffs?: ComparisonDiffListRelationFilter
-    currentDiffs?: ComparisonDiffListRelationFilter
   }
 
   export type SheetOrderByWithRelationInput = {
@@ -12558,11 +12558,11 @@ export namespace Prisma {
     documentId?: SortOrder
     alignmentResults?: AlignmentResultOrderByRelationAggregateInput
     boxes?: BoxOrderByRelationAggregateInput
+    currentDiffs?: ComparisonDiffOrderByRelationAggregateInput
+    originalDiffs?: ComparisonDiffOrderByRelationAggregateInput
     distances?: DistanceOrderByRelationAggregateInput
     references?: ReferenceOrderByRelationAggregateInput
     document?: DocumentOrderByWithRelationInput
-    originalDiffs?: ComparisonDiffOrderByRelationAggregateInput
-    currentDiffs?: ComparisonDiffOrderByRelationAggregateInput
   }
 
   export type SheetWhereUniqueInput = Prisma.AtLeast<{
@@ -12579,11 +12579,11 @@ export namespace Prisma {
     documentId?: IntFilter<"Sheet"> | number
     alignmentResults?: AlignmentResultListRelationFilter
     boxes?: BoxListRelationFilter
+    currentDiffs?: ComparisonDiffListRelationFilter
+    originalDiffs?: ComparisonDiffListRelationFilter
     distances?: DistanceListRelationFilter
     references?: ReferenceListRelationFilter
     document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
-    originalDiffs?: ComparisonDiffListRelationFilter
-    currentDiffs?: ComparisonDiffListRelationFilter
   }, "id">
 
   export type SheetOrderByWithAggregationInput = {
@@ -12631,9 +12631,9 @@ export namespace Prisma {
     description?: StringNullableFilter<"ComparisonDiff"> | string | null
     subContractorId?: IntNullableFilter<"ComparisonDiff"> | number | null
     status?: StringFilter<"ComparisonDiff"> | string
-    originalSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
-    currentSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
     subContractor?: XOR<SubContractorNullableScalarRelationFilter, SubContractorWhereInput> | null
+    currentSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
+    originalSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
   }
 
   export type ComparisonDiffOrderByWithRelationInput = {
@@ -12648,9 +12648,9 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     subContractorId?: SortOrderInput | SortOrder
     status?: SortOrder
-    originalSheet?: SheetOrderByWithRelationInput
-    currentSheet?: SheetOrderByWithRelationInput
     subContractor?: SubContractorOrderByWithRelationInput
+    currentSheet?: SheetOrderByWithRelationInput
+    originalSheet?: SheetOrderByWithRelationInput
   }
 
   export type ComparisonDiffWhereUniqueInput = Prisma.AtLeast<{
@@ -12669,9 +12669,9 @@ export namespace Prisma {
     description?: StringNullableFilter<"ComparisonDiff"> | string | null
     subContractorId?: IntNullableFilter<"ComparisonDiff"> | number | null
     status?: StringFilter<"ComparisonDiff"> | string
-    originalSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
-    currentSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
     subContractor?: XOR<SubContractorNullableScalarRelationFilter, SubContractorWhereInput> | null
+    currentSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
+    originalSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
   }, "id" | "originalSheetId_currentSheetId">
 
   export type ComparisonDiffOrderByWithAggregationInput = {
@@ -12987,8 +12987,8 @@ export namespace Prisma {
     translationY?: FloatFilter<"AlignmentResult"> | number
     scale?: FloatFilter<"AlignmentResult"> | number
     createdAt?: DateTimeFilter<"AlignmentResult"> | Date | string
-    targetSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
     sourceBox?: XOR<BoxScalarRelationFilter, BoxWhereInput>
+    targetSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
   }
 
   export type AlignmentResultOrderByWithRelationInput = {
@@ -12999,8 +12999,8 @@ export namespace Prisma {
     translationY?: SortOrder
     scale?: SortOrder
     createdAt?: SortOrder
-    targetSheet?: SheetOrderByWithRelationInput
     sourceBox?: BoxOrderByWithRelationInput
+    targetSheet?: SheetOrderByWithRelationInput
   }
 
   export type AlignmentResultWhereUniqueInput = Prisma.AtLeast<{
@@ -13015,8 +13015,8 @@ export namespace Prisma {
     translationY?: FloatFilter<"AlignmentResult"> | number
     scale?: FloatFilter<"AlignmentResult"> | number
     createdAt?: DateTimeFilter<"AlignmentResult"> | Date | string
-    targetSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
     sourceBox?: XOR<BoxScalarRelationFilter, BoxWhereInput>
+    targetSheet?: XOR<SheetScalarRelationFilter, SheetWhereInput>
   }, "id" | "sourceBoxId_targetSheetId">
 
   export type AlignmentResultOrderByWithAggregationInput = {
@@ -13104,10 +13104,10 @@ export namespace Prisma {
     id?: number
     type?: string | null
     path: string
+    projectId: number
     category?: string | null
     subcategory?: string | null
     title?: string | null
-    projectId: number
     sheets?: SheetUncheckedCreateNestedManyWithoutDocumentInput
   }
 
@@ -13125,10 +13125,10 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     type?: NullableStringFieldUpdateOperationsInput | string | null
     path?: StringFieldUpdateOperationsInput | string
+    projectId?: IntFieldUpdateOperationsInput | number
     category?: NullableStringFieldUpdateOperationsInput | string | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     title?: NullableStringFieldUpdateOperationsInput | string | null
-    projectId?: IntFieldUpdateOperationsInput | number
     sheets?: SheetUncheckedUpdateManyWithoutDocumentNestedInput
   }
 
@@ -13136,10 +13136,10 @@ export namespace Prisma {
     id?: number
     type?: string | null
     path: string
+    projectId: number
     category?: string | null
     subcategory?: string | null
     title?: string | null
-    projectId: number
   }
 
   export type DocumentUpdateManyMutationInput = {
@@ -13154,10 +13154,10 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     type?: NullableStringFieldUpdateOperationsInput | string | null
     path?: StringFieldUpdateOperationsInput | string
+    projectId?: IntFieldUpdateOperationsInput | number
     category?: NullableStringFieldUpdateOperationsInput | string | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     title?: NullableStringFieldUpdateOperationsInput | string | null
-    projectId?: IntFieldUpdateOperationsInput | number
   }
 
   export type SheetCreateInput = {
@@ -13169,11 +13169,11 @@ export namespace Prisma {
     svgPath?: string | null
     alignmentResults?: AlignmentResultCreateNestedManyWithoutTargetSheetInput
     boxes?: BoxCreateNestedManyWithoutSheetInput
+    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
     distances?: DistanceCreateNestedManyWithoutSheetInput
     references?: ReferenceCreateNestedManyWithoutSheetInput
     document: DocumentCreateNestedOneWithoutSheetsInput
-    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
-    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
   }
 
   export type SheetUncheckedCreateInput = {
@@ -13187,10 +13187,10 @@ export namespace Prisma {
     documentId: number
     alignmentResults?: AlignmentResultUncheckedCreateNestedManyWithoutTargetSheetInput
     boxes?: BoxUncheckedCreateNestedManyWithoutSheetInput
+    currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
     distances?: DistanceUncheckedCreateNestedManyWithoutSheetInput
     references?: ReferenceUncheckedCreateNestedManyWithoutSheetInput
-    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
-    currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
   }
 
   export type SheetUpdateInput = {
@@ -13202,11 +13202,11 @@ export namespace Prisma {
     svgPath?: NullableStringFieldUpdateOperationsInput | string | null
     alignmentResults?: AlignmentResultUpdateManyWithoutTargetSheetNestedInput
     boxes?: BoxUpdateManyWithoutSheetNestedInput
+    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
+    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
     distances?: DistanceUpdateManyWithoutSheetNestedInput
     references?: ReferenceUpdateManyWithoutSheetNestedInput
     document?: DocumentUpdateOneRequiredWithoutSheetsNestedInput
-    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
-    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
   }
 
   export type SheetUncheckedUpdateInput = {
@@ -13220,10 +13220,10 @@ export namespace Prisma {
     documentId?: IntFieldUpdateOperationsInput | number
     alignmentResults?: AlignmentResultUncheckedUpdateManyWithoutTargetSheetNestedInput
     boxes?: BoxUncheckedUpdateManyWithoutSheetNestedInput
+    currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
+    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
     distances?: DistanceUncheckedUpdateManyWithoutSheetNestedInput
     references?: ReferenceUncheckedUpdateManyWithoutSheetNestedInput
-    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
-    currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
   }
 
   export type SheetCreateManyInput = {
@@ -13265,9 +13265,9 @@ export namespace Prisma {
     title?: string | null
     description?: string | null
     status?: string
-    originalSheet: SheetCreateNestedOneWithoutOriginalDiffsInput
-    currentSheet: SheetCreateNestedOneWithoutCurrentDiffsInput
     subContractor?: SubContractorCreateNestedOneWithoutComparisonDiffsInput
+    currentSheet: SheetCreateNestedOneWithoutCurrentDiffsInput
+    originalSheet: SheetCreateNestedOneWithoutOriginalDiffsInput
   }
 
   export type ComparisonDiffUncheckedCreateInput = {
@@ -13292,9 +13292,9 @@ export namespace Prisma {
     title?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
-    originalSheet?: SheetUpdateOneRequiredWithoutOriginalDiffsNestedInput
-    currentSheet?: SheetUpdateOneRequiredWithoutCurrentDiffsNestedInput
     subContractor?: SubContractorUpdateOneWithoutComparisonDiffsNestedInput
+    currentSheet?: SheetUpdateOneRequiredWithoutCurrentDiffsNestedInput
+    originalSheet?: SheetUpdateOneRequiredWithoutOriginalDiffsNestedInput
   }
 
   export type ComparisonDiffUncheckedUpdateInput = {
@@ -13620,8 +13620,8 @@ export namespace Prisma {
     translationY: number
     scale: number
     createdAt?: Date | string
-    targetSheet: SheetCreateNestedOneWithoutAlignmentResultsInput
     sourceBox: BoxCreateNestedOneWithoutAlignmentResultsInput
+    targetSheet: SheetCreateNestedOneWithoutAlignmentResultsInput
   }
 
   export type AlignmentResultUncheckedCreateInput = {
@@ -13639,8 +13639,8 @@ export namespace Prisma {
     translationY?: FloatFieldUpdateOperationsInput | number
     scale?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    targetSheet?: SheetUpdateOneRequiredWithoutAlignmentResultsNestedInput
     sourceBox?: BoxUpdateOneRequiredWithoutAlignmentResultsNestedInput
+    targetSheet?: SheetUpdateOneRequiredWithoutAlignmentResultsNestedInput
   }
 
   export type AlignmentResultUncheckedUpdateInput = {
@@ -13837,10 +13837,10 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     path?: SortOrder
+    projectId?: SortOrder
     category?: SortOrder
     subcategory?: SortOrder
     title?: SortOrder
-    projectId?: SortOrder
   }
 
   export type DocumentAvgOrderByAggregateInput = {
@@ -13852,20 +13852,20 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     path?: SortOrder
+    projectId?: SortOrder
     category?: SortOrder
     subcategory?: SortOrder
     title?: SortOrder
-    projectId?: SortOrder
   }
 
   export type DocumentMinOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
     path?: SortOrder
+    projectId?: SortOrder
     category?: SortOrder
     subcategory?: SortOrder
     title?: SortOrder
-    projectId?: SortOrder
   }
 
   export type DocumentSumOrderByAggregateInput = {
@@ -13913,6 +13913,12 @@ export namespace Prisma {
     none?: BoxWhereInput
   }
 
+  export type ComparisonDiffListRelationFilter = {
+    every?: ComparisonDiffWhereInput
+    some?: ComparisonDiffWhereInput
+    none?: ComparisonDiffWhereInput
+  }
+
   export type DistanceListRelationFilter = {
     every?: DistanceWhereInput
     some?: DistanceWhereInput
@@ -13930,12 +13936,6 @@ export namespace Prisma {
     isNot?: DocumentWhereInput
   }
 
-  export type ComparisonDiffListRelationFilter = {
-    every?: ComparisonDiffWhereInput
-    some?: ComparisonDiffWhereInput
-    none?: ComparisonDiffWhereInput
-  }
-
   export type AlignmentResultOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -13944,15 +13944,15 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type ComparisonDiffOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type DistanceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type ReferenceOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ComparisonDiffOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14022,14 +14022,14 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type SheetScalarRelationFilter = {
-    is?: SheetWhereInput
-    isNot?: SheetWhereInput
-  }
-
   export type SubContractorNullableScalarRelationFilter = {
     is?: SubContractorWhereInput | null
     isNot?: SubContractorWhereInput | null
+  }
+
+  export type SheetScalarRelationFilter = {
+    is?: SheetWhereInput
+    isNot?: SheetWhereInput
   }
 
   export type ComparisonDiffOriginalSheetIdCurrentSheetIdCompoundUniqueInput = {
@@ -14481,6 +14481,20 @@ export namespace Prisma {
     connect?: BoxWhereUniqueInput | BoxWhereUniqueInput[]
   }
 
+  export type ComparisonDiffCreateNestedManyWithoutCurrentSheetInput = {
+    create?: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput> | ComparisonDiffCreateWithoutCurrentSheetInput[] | ComparisonDiffUncheckedCreateWithoutCurrentSheetInput[]
+    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutCurrentSheetInput | ComparisonDiffCreateOrConnectWithoutCurrentSheetInput[]
+    createMany?: ComparisonDiffCreateManyCurrentSheetInputEnvelope
+    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+  }
+
+  export type ComparisonDiffCreateNestedManyWithoutOriginalSheetInput = {
+    create?: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput> | ComparisonDiffCreateWithoutOriginalSheetInput[] | ComparisonDiffUncheckedCreateWithoutOriginalSheetInput[]
+    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutOriginalSheetInput | ComparisonDiffCreateOrConnectWithoutOriginalSheetInput[]
+    createMany?: ComparisonDiffCreateManyOriginalSheetInputEnvelope
+    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+  }
+
   export type DistanceCreateNestedManyWithoutSheetInput = {
     create?: XOR<DistanceCreateWithoutSheetInput, DistanceUncheckedCreateWithoutSheetInput> | DistanceCreateWithoutSheetInput[] | DistanceUncheckedCreateWithoutSheetInput[]
     connectOrCreate?: DistanceCreateOrConnectWithoutSheetInput | DistanceCreateOrConnectWithoutSheetInput[]
@@ -14501,20 +14515,6 @@ export namespace Prisma {
     connect?: DocumentWhereUniqueInput
   }
 
-  export type ComparisonDiffCreateNestedManyWithoutOriginalSheetInput = {
-    create?: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput> | ComparisonDiffCreateWithoutOriginalSheetInput[] | ComparisonDiffUncheckedCreateWithoutOriginalSheetInput[]
-    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutOriginalSheetInput | ComparisonDiffCreateOrConnectWithoutOriginalSheetInput[]
-    createMany?: ComparisonDiffCreateManyOriginalSheetInputEnvelope
-    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-  }
-
-  export type ComparisonDiffCreateNestedManyWithoutCurrentSheetInput = {
-    create?: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput> | ComparisonDiffCreateWithoutCurrentSheetInput[] | ComparisonDiffUncheckedCreateWithoutCurrentSheetInput[]
-    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutCurrentSheetInput | ComparisonDiffCreateOrConnectWithoutCurrentSheetInput[]
-    createMany?: ComparisonDiffCreateManyCurrentSheetInputEnvelope
-    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-  }
-
   export type AlignmentResultUncheckedCreateNestedManyWithoutTargetSheetInput = {
     create?: XOR<AlignmentResultCreateWithoutTargetSheetInput, AlignmentResultUncheckedCreateWithoutTargetSheetInput> | AlignmentResultCreateWithoutTargetSheetInput[] | AlignmentResultUncheckedCreateWithoutTargetSheetInput[]
     connectOrCreate?: AlignmentResultCreateOrConnectWithoutTargetSheetInput | AlignmentResultCreateOrConnectWithoutTargetSheetInput[]
@@ -14529,6 +14529,20 @@ export namespace Prisma {
     connect?: BoxWhereUniqueInput | BoxWhereUniqueInput[]
   }
 
+  export type ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput = {
+    create?: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput> | ComparisonDiffCreateWithoutCurrentSheetInput[] | ComparisonDiffUncheckedCreateWithoutCurrentSheetInput[]
+    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutCurrentSheetInput | ComparisonDiffCreateOrConnectWithoutCurrentSheetInput[]
+    createMany?: ComparisonDiffCreateManyCurrentSheetInputEnvelope
+    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+  }
+
+  export type ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput = {
+    create?: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput> | ComparisonDiffCreateWithoutOriginalSheetInput[] | ComparisonDiffUncheckedCreateWithoutOriginalSheetInput[]
+    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutOriginalSheetInput | ComparisonDiffCreateOrConnectWithoutOriginalSheetInput[]
+    createMany?: ComparisonDiffCreateManyOriginalSheetInputEnvelope
+    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+  }
+
   export type DistanceUncheckedCreateNestedManyWithoutSheetInput = {
     create?: XOR<DistanceCreateWithoutSheetInput, DistanceUncheckedCreateWithoutSheetInput> | DistanceCreateWithoutSheetInput[] | DistanceUncheckedCreateWithoutSheetInput[]
     connectOrCreate?: DistanceCreateOrConnectWithoutSheetInput | DistanceCreateOrConnectWithoutSheetInput[]
@@ -14541,20 +14555,6 @@ export namespace Prisma {
     connectOrCreate?: ReferenceCreateOrConnectWithoutSheetInput | ReferenceCreateOrConnectWithoutSheetInput[]
     createMany?: ReferenceCreateManySheetInputEnvelope
     connect?: ReferenceWhereUniqueInput | ReferenceWhereUniqueInput[]
-  }
-
-  export type ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput = {
-    create?: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput> | ComparisonDiffCreateWithoutOriginalSheetInput[] | ComparisonDiffUncheckedCreateWithoutOriginalSheetInput[]
-    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutOriginalSheetInput | ComparisonDiffCreateOrConnectWithoutOriginalSheetInput[]
-    createMany?: ComparisonDiffCreateManyOriginalSheetInputEnvelope
-    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-  }
-
-  export type ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput = {
-    create?: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput> | ComparisonDiffCreateWithoutCurrentSheetInput[] | ComparisonDiffUncheckedCreateWithoutCurrentSheetInput[]
-    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutCurrentSheetInput | ComparisonDiffCreateOrConnectWithoutCurrentSheetInput[]
-    createMany?: ComparisonDiffCreateManyCurrentSheetInputEnvelope
-    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -14593,6 +14593,34 @@ export namespace Prisma {
     deleteMany?: BoxScalarWhereInput | BoxScalarWhereInput[]
   }
 
+  export type ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput = {
+    create?: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput> | ComparisonDiffCreateWithoutCurrentSheetInput[] | ComparisonDiffUncheckedCreateWithoutCurrentSheetInput[]
+    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutCurrentSheetInput | ComparisonDiffCreateOrConnectWithoutCurrentSheetInput[]
+    upsert?: ComparisonDiffUpsertWithWhereUniqueWithoutCurrentSheetInput | ComparisonDiffUpsertWithWhereUniqueWithoutCurrentSheetInput[]
+    createMany?: ComparisonDiffCreateManyCurrentSheetInputEnvelope
+    set?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    disconnect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    delete?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    update?: ComparisonDiffUpdateWithWhereUniqueWithoutCurrentSheetInput | ComparisonDiffUpdateWithWhereUniqueWithoutCurrentSheetInput[]
+    updateMany?: ComparisonDiffUpdateManyWithWhereWithoutCurrentSheetInput | ComparisonDiffUpdateManyWithWhereWithoutCurrentSheetInput[]
+    deleteMany?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
+  }
+
+  export type ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput = {
+    create?: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput> | ComparisonDiffCreateWithoutOriginalSheetInput[] | ComparisonDiffUncheckedCreateWithoutOriginalSheetInput[]
+    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutOriginalSheetInput | ComparisonDiffCreateOrConnectWithoutOriginalSheetInput[]
+    upsert?: ComparisonDiffUpsertWithWhereUniqueWithoutOriginalSheetInput | ComparisonDiffUpsertWithWhereUniqueWithoutOriginalSheetInput[]
+    createMany?: ComparisonDiffCreateManyOriginalSheetInputEnvelope
+    set?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    disconnect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    delete?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    update?: ComparisonDiffUpdateWithWhereUniqueWithoutOriginalSheetInput | ComparisonDiffUpdateWithWhereUniqueWithoutOriginalSheetInput[]
+    updateMany?: ComparisonDiffUpdateManyWithWhereWithoutOriginalSheetInput | ComparisonDiffUpdateManyWithWhereWithoutOriginalSheetInput[]
+    deleteMany?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
+  }
+
   export type DistanceUpdateManyWithoutSheetNestedInput = {
     create?: XOR<DistanceCreateWithoutSheetInput, DistanceUncheckedCreateWithoutSheetInput> | DistanceCreateWithoutSheetInput[] | DistanceUncheckedCreateWithoutSheetInput[]
     connectOrCreate?: DistanceCreateOrConnectWithoutSheetInput | DistanceCreateOrConnectWithoutSheetInput[]
@@ -14629,34 +14657,6 @@ export namespace Prisma {
     update?: XOR<XOR<DocumentUpdateToOneWithWhereWithoutSheetsInput, DocumentUpdateWithoutSheetsInput>, DocumentUncheckedUpdateWithoutSheetsInput>
   }
 
-  export type ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput = {
-    create?: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput> | ComparisonDiffCreateWithoutOriginalSheetInput[] | ComparisonDiffUncheckedCreateWithoutOriginalSheetInput[]
-    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutOriginalSheetInput | ComparisonDiffCreateOrConnectWithoutOriginalSheetInput[]
-    upsert?: ComparisonDiffUpsertWithWhereUniqueWithoutOriginalSheetInput | ComparisonDiffUpsertWithWhereUniqueWithoutOriginalSheetInput[]
-    createMany?: ComparisonDiffCreateManyOriginalSheetInputEnvelope
-    set?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    disconnect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    delete?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    update?: ComparisonDiffUpdateWithWhereUniqueWithoutOriginalSheetInput | ComparisonDiffUpdateWithWhereUniqueWithoutOriginalSheetInput[]
-    updateMany?: ComparisonDiffUpdateManyWithWhereWithoutOriginalSheetInput | ComparisonDiffUpdateManyWithWhereWithoutOriginalSheetInput[]
-    deleteMany?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
-  }
-
-  export type ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput = {
-    create?: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput> | ComparisonDiffCreateWithoutCurrentSheetInput[] | ComparisonDiffUncheckedCreateWithoutCurrentSheetInput[]
-    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutCurrentSheetInput | ComparisonDiffCreateOrConnectWithoutCurrentSheetInput[]
-    upsert?: ComparisonDiffUpsertWithWhereUniqueWithoutCurrentSheetInput | ComparisonDiffUpsertWithWhereUniqueWithoutCurrentSheetInput[]
-    createMany?: ComparisonDiffCreateManyCurrentSheetInputEnvelope
-    set?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    disconnect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    delete?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    update?: ComparisonDiffUpdateWithWhereUniqueWithoutCurrentSheetInput | ComparisonDiffUpdateWithWhereUniqueWithoutCurrentSheetInput[]
-    updateMany?: ComparisonDiffUpdateManyWithWhereWithoutCurrentSheetInput | ComparisonDiffUpdateManyWithWhereWithoutCurrentSheetInput[]
-    deleteMany?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
-  }
-
   export type AlignmentResultUncheckedUpdateManyWithoutTargetSheetNestedInput = {
     create?: XOR<AlignmentResultCreateWithoutTargetSheetInput, AlignmentResultUncheckedCreateWithoutTargetSheetInput> | AlignmentResultCreateWithoutTargetSheetInput[] | AlignmentResultUncheckedCreateWithoutTargetSheetInput[]
     connectOrCreate?: AlignmentResultCreateOrConnectWithoutTargetSheetInput | AlignmentResultCreateOrConnectWithoutTargetSheetInput[]
@@ -14683,6 +14683,34 @@ export namespace Prisma {
     update?: BoxUpdateWithWhereUniqueWithoutSheetInput | BoxUpdateWithWhereUniqueWithoutSheetInput[]
     updateMany?: BoxUpdateManyWithWhereWithoutSheetInput | BoxUpdateManyWithWhereWithoutSheetInput[]
     deleteMany?: BoxScalarWhereInput | BoxScalarWhereInput[]
+  }
+
+  export type ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput = {
+    create?: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput> | ComparisonDiffCreateWithoutCurrentSheetInput[] | ComparisonDiffUncheckedCreateWithoutCurrentSheetInput[]
+    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutCurrentSheetInput | ComparisonDiffCreateOrConnectWithoutCurrentSheetInput[]
+    upsert?: ComparisonDiffUpsertWithWhereUniqueWithoutCurrentSheetInput | ComparisonDiffUpsertWithWhereUniqueWithoutCurrentSheetInput[]
+    createMany?: ComparisonDiffCreateManyCurrentSheetInputEnvelope
+    set?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    disconnect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    delete?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    update?: ComparisonDiffUpdateWithWhereUniqueWithoutCurrentSheetInput | ComparisonDiffUpdateWithWhereUniqueWithoutCurrentSheetInput[]
+    updateMany?: ComparisonDiffUpdateManyWithWhereWithoutCurrentSheetInput | ComparisonDiffUpdateManyWithWhereWithoutCurrentSheetInput[]
+    deleteMany?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
+  }
+
+  export type ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput = {
+    create?: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput> | ComparisonDiffCreateWithoutOriginalSheetInput[] | ComparisonDiffUncheckedCreateWithoutOriginalSheetInput[]
+    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutOriginalSheetInput | ComparisonDiffCreateOrConnectWithoutOriginalSheetInput[]
+    upsert?: ComparisonDiffUpsertWithWhereUniqueWithoutOriginalSheetInput | ComparisonDiffUpsertWithWhereUniqueWithoutOriginalSheetInput[]
+    createMany?: ComparisonDiffCreateManyOriginalSheetInputEnvelope
+    set?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    disconnect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    delete?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
+    update?: ComparisonDiffUpdateWithWhereUniqueWithoutOriginalSheetInput | ComparisonDiffUpdateWithWhereUniqueWithoutOriginalSheetInput[]
+    updateMany?: ComparisonDiffUpdateManyWithWhereWithoutOriginalSheetInput | ComparisonDiffUpdateManyWithWhereWithoutOriginalSheetInput[]
+    deleteMany?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
   }
 
   export type DistanceUncheckedUpdateManyWithoutSheetNestedInput = {
@@ -14713,38 +14741,10 @@ export namespace Prisma {
     deleteMany?: ReferenceScalarWhereInput | ReferenceScalarWhereInput[]
   }
 
-  export type ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput = {
-    create?: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput> | ComparisonDiffCreateWithoutOriginalSheetInput[] | ComparisonDiffUncheckedCreateWithoutOriginalSheetInput[]
-    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutOriginalSheetInput | ComparisonDiffCreateOrConnectWithoutOriginalSheetInput[]
-    upsert?: ComparisonDiffUpsertWithWhereUniqueWithoutOriginalSheetInput | ComparisonDiffUpsertWithWhereUniqueWithoutOriginalSheetInput[]
-    createMany?: ComparisonDiffCreateManyOriginalSheetInputEnvelope
-    set?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    disconnect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    delete?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    update?: ComparisonDiffUpdateWithWhereUniqueWithoutOriginalSheetInput | ComparisonDiffUpdateWithWhereUniqueWithoutOriginalSheetInput[]
-    updateMany?: ComparisonDiffUpdateManyWithWhereWithoutOriginalSheetInput | ComparisonDiffUpdateManyWithWhereWithoutOriginalSheetInput[]
-    deleteMany?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
-  }
-
-  export type ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput = {
-    create?: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput> | ComparisonDiffCreateWithoutCurrentSheetInput[] | ComparisonDiffUncheckedCreateWithoutCurrentSheetInput[]
-    connectOrCreate?: ComparisonDiffCreateOrConnectWithoutCurrentSheetInput | ComparisonDiffCreateOrConnectWithoutCurrentSheetInput[]
-    upsert?: ComparisonDiffUpsertWithWhereUniqueWithoutCurrentSheetInput | ComparisonDiffUpsertWithWhereUniqueWithoutCurrentSheetInput[]
-    createMany?: ComparisonDiffCreateManyCurrentSheetInputEnvelope
-    set?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    disconnect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    delete?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    connect?: ComparisonDiffWhereUniqueInput | ComparisonDiffWhereUniqueInput[]
-    update?: ComparisonDiffUpdateWithWhereUniqueWithoutCurrentSheetInput | ComparisonDiffUpdateWithWhereUniqueWithoutCurrentSheetInput[]
-    updateMany?: ComparisonDiffUpdateManyWithWhereWithoutCurrentSheetInput | ComparisonDiffUpdateManyWithWhereWithoutCurrentSheetInput[]
-    deleteMany?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
-  }
-
-  export type SheetCreateNestedOneWithoutOriginalDiffsInput = {
-    create?: XOR<SheetCreateWithoutOriginalDiffsInput, SheetUncheckedCreateWithoutOriginalDiffsInput>
-    connectOrCreate?: SheetCreateOrConnectWithoutOriginalDiffsInput
-    connect?: SheetWhereUniqueInput
+  export type SubContractorCreateNestedOneWithoutComparisonDiffsInput = {
+    create?: XOR<SubContractorCreateWithoutComparisonDiffsInput, SubContractorUncheckedCreateWithoutComparisonDiffsInput>
+    connectOrCreate?: SubContractorCreateOrConnectWithoutComparisonDiffsInput
+    connect?: SubContractorWhereUniqueInput
   }
 
   export type SheetCreateNestedOneWithoutCurrentDiffsInput = {
@@ -14753,30 +14753,14 @@ export namespace Prisma {
     connect?: SheetWhereUniqueInput
   }
 
-  export type SubContractorCreateNestedOneWithoutComparisonDiffsInput = {
-    create?: XOR<SubContractorCreateWithoutComparisonDiffsInput, SubContractorUncheckedCreateWithoutComparisonDiffsInput>
-    connectOrCreate?: SubContractorCreateOrConnectWithoutComparisonDiffsInput
-    connect?: SubContractorWhereUniqueInput
+  export type SheetCreateNestedOneWithoutOriginalDiffsInput = {
+    create?: XOR<SheetCreateWithoutOriginalDiffsInput, SheetUncheckedCreateWithoutOriginalDiffsInput>
+    connectOrCreate?: SheetCreateOrConnectWithoutOriginalDiffsInput
+    connect?: SheetWhereUniqueInput
   }
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
-  }
-
-  export type SheetUpdateOneRequiredWithoutOriginalDiffsNestedInput = {
-    create?: XOR<SheetCreateWithoutOriginalDiffsInput, SheetUncheckedCreateWithoutOriginalDiffsInput>
-    connectOrCreate?: SheetCreateOrConnectWithoutOriginalDiffsInput
-    upsert?: SheetUpsertWithoutOriginalDiffsInput
-    connect?: SheetWhereUniqueInput
-    update?: XOR<XOR<SheetUpdateToOneWithWhereWithoutOriginalDiffsInput, SheetUpdateWithoutOriginalDiffsInput>, SheetUncheckedUpdateWithoutOriginalDiffsInput>
-  }
-
-  export type SheetUpdateOneRequiredWithoutCurrentDiffsNestedInput = {
-    create?: XOR<SheetCreateWithoutCurrentDiffsInput, SheetUncheckedCreateWithoutCurrentDiffsInput>
-    connectOrCreate?: SheetCreateOrConnectWithoutCurrentDiffsInput
-    upsert?: SheetUpsertWithoutCurrentDiffsInput
-    connect?: SheetWhereUniqueInput
-    update?: XOR<XOR<SheetUpdateToOneWithWhereWithoutCurrentDiffsInput, SheetUpdateWithoutCurrentDiffsInput>, SheetUncheckedUpdateWithoutCurrentDiffsInput>
   }
 
   export type SubContractorUpdateOneWithoutComparisonDiffsNestedInput = {
@@ -14787,6 +14771,22 @@ export namespace Prisma {
     delete?: SubContractorWhereInput | boolean
     connect?: SubContractorWhereUniqueInput
     update?: XOR<XOR<SubContractorUpdateToOneWithWhereWithoutComparisonDiffsInput, SubContractorUpdateWithoutComparisonDiffsInput>, SubContractorUncheckedUpdateWithoutComparisonDiffsInput>
+  }
+
+  export type SheetUpdateOneRequiredWithoutCurrentDiffsNestedInput = {
+    create?: XOR<SheetCreateWithoutCurrentDiffsInput, SheetUncheckedCreateWithoutCurrentDiffsInput>
+    connectOrCreate?: SheetCreateOrConnectWithoutCurrentDiffsInput
+    upsert?: SheetUpsertWithoutCurrentDiffsInput
+    connect?: SheetWhereUniqueInput
+    update?: XOR<XOR<SheetUpdateToOneWithWhereWithoutCurrentDiffsInput, SheetUpdateWithoutCurrentDiffsInput>, SheetUncheckedUpdateWithoutCurrentDiffsInput>
+  }
+
+  export type SheetUpdateOneRequiredWithoutOriginalDiffsNestedInput = {
+    create?: XOR<SheetCreateWithoutOriginalDiffsInput, SheetUncheckedCreateWithoutOriginalDiffsInput>
+    connectOrCreate?: SheetCreateOrConnectWithoutOriginalDiffsInput
+    upsert?: SheetUpsertWithoutOriginalDiffsInput
+    connect?: SheetWhereUniqueInput
+    update?: XOR<XOR<SheetUpdateToOneWithWhereWithoutOriginalDiffsInput, SheetUpdateWithoutOriginalDiffsInput>, SheetUncheckedUpdateWithoutOriginalDiffsInput>
   }
 
   export type ComparisonDiffCreateNestedManyWithoutSubContractorInput = {
@@ -14923,24 +14923,16 @@ export namespace Prisma {
     update?: XOR<XOR<SheetUpdateToOneWithWhereWithoutDistancesInput, SheetUpdateWithoutDistancesInput>, SheetUncheckedUpdateWithoutDistancesInput>
   }
 
-  export type SheetCreateNestedOneWithoutAlignmentResultsInput = {
-    create?: XOR<SheetCreateWithoutAlignmentResultsInput, SheetUncheckedCreateWithoutAlignmentResultsInput>
-    connectOrCreate?: SheetCreateOrConnectWithoutAlignmentResultsInput
-    connect?: SheetWhereUniqueInput
-  }
-
   export type BoxCreateNestedOneWithoutAlignmentResultsInput = {
     create?: XOR<BoxCreateWithoutAlignmentResultsInput, BoxUncheckedCreateWithoutAlignmentResultsInput>
     connectOrCreate?: BoxCreateOrConnectWithoutAlignmentResultsInput
     connect?: BoxWhereUniqueInput
   }
 
-  export type SheetUpdateOneRequiredWithoutAlignmentResultsNestedInput = {
+  export type SheetCreateNestedOneWithoutAlignmentResultsInput = {
     create?: XOR<SheetCreateWithoutAlignmentResultsInput, SheetUncheckedCreateWithoutAlignmentResultsInput>
     connectOrCreate?: SheetCreateOrConnectWithoutAlignmentResultsInput
-    upsert?: SheetUpsertWithoutAlignmentResultsInput
     connect?: SheetWhereUniqueInput
-    update?: XOR<XOR<SheetUpdateToOneWithWhereWithoutAlignmentResultsInput, SheetUpdateWithoutAlignmentResultsInput>, SheetUncheckedUpdateWithoutAlignmentResultsInput>
   }
 
   export type BoxUpdateOneRequiredWithoutAlignmentResultsNestedInput = {
@@ -14949,6 +14941,14 @@ export namespace Prisma {
     upsert?: BoxUpsertWithoutAlignmentResultsInput
     connect?: BoxWhereUniqueInput
     update?: XOR<XOR<BoxUpdateToOneWithWhereWithoutAlignmentResultsInput, BoxUpdateWithoutAlignmentResultsInput>, BoxUncheckedUpdateWithoutAlignmentResultsInput>
+  }
+
+  export type SheetUpdateOneRequiredWithoutAlignmentResultsNestedInput = {
+    create?: XOR<SheetCreateWithoutAlignmentResultsInput, SheetUncheckedCreateWithoutAlignmentResultsInput>
+    connectOrCreate?: SheetCreateOrConnectWithoutAlignmentResultsInput
+    upsert?: SheetUpsertWithoutAlignmentResultsInput
+    connect?: SheetWhereUniqueInput
+    update?: XOR<XOR<SheetUpdateToOneWithWhereWithoutAlignmentResultsInput, SheetUpdateWithoutAlignmentResultsInput>, SheetUncheckedUpdateWithoutAlignmentResultsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -15194,10 +15194,10 @@ export namespace Prisma {
     id?: IntFilter<"Document"> | number
     type?: StringNullableFilter<"Document"> | string | null
     path?: StringFilter<"Document"> | string
+    projectId?: IntFilter<"Document"> | number
     category?: StringNullableFilter<"Document"> | string | null
     subcategory?: StringNullableFilter<"Document"> | string | null
     title?: StringNullableFilter<"Document"> | string | null
-    projectId?: IntFilter<"Document"> | number
   }
 
   export type ProjectCreateWithoutDocumentsInput = {
@@ -15225,10 +15225,10 @@ export namespace Prisma {
     svgPath?: string | null
     alignmentResults?: AlignmentResultCreateNestedManyWithoutTargetSheetInput
     boxes?: BoxCreateNestedManyWithoutSheetInput
+    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
     distances?: DistanceCreateNestedManyWithoutSheetInput
     references?: ReferenceCreateNestedManyWithoutSheetInput
-    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
-    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
   }
 
   export type SheetUncheckedCreateWithoutDocumentInput = {
@@ -15241,10 +15241,10 @@ export namespace Prisma {
     svgPath?: string | null
     alignmentResults?: AlignmentResultUncheckedCreateNestedManyWithoutTargetSheetInput
     boxes?: BoxUncheckedCreateNestedManyWithoutSheetInput
+    currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
     distances?: DistanceUncheckedCreateNestedManyWithoutSheetInput
     references?: ReferenceUncheckedCreateNestedManyWithoutSheetInput
-    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
-    currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
   }
 
   export type SheetCreateOrConnectWithoutDocumentInput = {
@@ -15374,6 +15374,74 @@ export namespace Prisma {
     data: BoxCreateManySheetInput | BoxCreateManySheetInput[]
   }
 
+  export type ComparisonDiffCreateWithoutCurrentSheetInput = {
+    hasAdditions?: boolean
+    hasDeletions?: boolean
+    originalBbox?: string | null
+    currentBbox?: string | null
+    title?: string | null
+    description?: string | null
+    status?: string
+    subContractor?: SubContractorCreateNestedOneWithoutComparisonDiffsInput
+    originalSheet: SheetCreateNestedOneWithoutOriginalDiffsInput
+  }
+
+  export type ComparisonDiffUncheckedCreateWithoutCurrentSheetInput = {
+    id?: number
+    originalSheetId: number
+    hasAdditions?: boolean
+    hasDeletions?: boolean
+    originalBbox?: string | null
+    currentBbox?: string | null
+    title?: string | null
+    description?: string | null
+    subContractorId?: number | null
+    status?: string
+  }
+
+  export type ComparisonDiffCreateOrConnectWithoutCurrentSheetInput = {
+    where: ComparisonDiffWhereUniqueInput
+    create: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput>
+  }
+
+  export type ComparisonDiffCreateManyCurrentSheetInputEnvelope = {
+    data: ComparisonDiffCreateManyCurrentSheetInput | ComparisonDiffCreateManyCurrentSheetInput[]
+  }
+
+  export type ComparisonDiffCreateWithoutOriginalSheetInput = {
+    hasAdditions?: boolean
+    hasDeletions?: boolean
+    originalBbox?: string | null
+    currentBbox?: string | null
+    title?: string | null
+    description?: string | null
+    status?: string
+    subContractor?: SubContractorCreateNestedOneWithoutComparisonDiffsInput
+    currentSheet: SheetCreateNestedOneWithoutCurrentDiffsInput
+  }
+
+  export type ComparisonDiffUncheckedCreateWithoutOriginalSheetInput = {
+    id?: number
+    currentSheetId: number
+    hasAdditions?: boolean
+    hasDeletions?: boolean
+    originalBbox?: string | null
+    currentBbox?: string | null
+    title?: string | null
+    description?: string | null
+    subContractorId?: number | null
+    status?: string
+  }
+
+  export type ComparisonDiffCreateOrConnectWithoutOriginalSheetInput = {
+    where: ComparisonDiffWhereUniqueInput
+    create: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput>
+  }
+
+  export type ComparisonDiffCreateManyOriginalSheetInputEnvelope = {
+    data: ComparisonDiffCreateManyOriginalSheetInput | ComparisonDiffCreateManyOriginalSheetInput[]
+  }
+
   export type DistanceCreateWithoutSheetInput = {
     pointA: string
     pointB: string
@@ -15433,83 +15501,15 @@ export namespace Prisma {
     id?: number
     type?: string | null
     path: string
+    projectId: number
     category?: string | null
     subcategory?: string | null
     title?: string | null
-    projectId: number
   }
 
   export type DocumentCreateOrConnectWithoutSheetsInput = {
     where: DocumentWhereUniqueInput
     create: XOR<DocumentCreateWithoutSheetsInput, DocumentUncheckedCreateWithoutSheetsInput>
-  }
-
-  export type ComparisonDiffCreateWithoutOriginalSheetInput = {
-    hasAdditions?: boolean
-    hasDeletions?: boolean
-    originalBbox?: string | null
-    currentBbox?: string | null
-    title?: string | null
-    description?: string | null
-    status?: string
-    currentSheet: SheetCreateNestedOneWithoutCurrentDiffsInput
-    subContractor?: SubContractorCreateNestedOneWithoutComparisonDiffsInput
-  }
-
-  export type ComparisonDiffUncheckedCreateWithoutOriginalSheetInput = {
-    id?: number
-    currentSheetId: number
-    hasAdditions?: boolean
-    hasDeletions?: boolean
-    originalBbox?: string | null
-    currentBbox?: string | null
-    title?: string | null
-    description?: string | null
-    subContractorId?: number | null
-    status?: string
-  }
-
-  export type ComparisonDiffCreateOrConnectWithoutOriginalSheetInput = {
-    where: ComparisonDiffWhereUniqueInput
-    create: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput>
-  }
-
-  export type ComparisonDiffCreateManyOriginalSheetInputEnvelope = {
-    data: ComparisonDiffCreateManyOriginalSheetInput | ComparisonDiffCreateManyOriginalSheetInput[]
-  }
-
-  export type ComparisonDiffCreateWithoutCurrentSheetInput = {
-    hasAdditions?: boolean
-    hasDeletions?: boolean
-    originalBbox?: string | null
-    currentBbox?: string | null
-    title?: string | null
-    description?: string | null
-    status?: string
-    originalSheet: SheetCreateNestedOneWithoutOriginalDiffsInput
-    subContractor?: SubContractorCreateNestedOneWithoutComparisonDiffsInput
-  }
-
-  export type ComparisonDiffUncheckedCreateWithoutCurrentSheetInput = {
-    id?: number
-    originalSheetId: number
-    hasAdditions?: boolean
-    hasDeletions?: boolean
-    originalBbox?: string | null
-    currentBbox?: string | null
-    title?: string | null
-    description?: string | null
-    subContractorId?: number | null
-    status?: string
-  }
-
-  export type ComparisonDiffCreateOrConnectWithoutCurrentSheetInput = {
-    where: ComparisonDiffWhereUniqueInput
-    create: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput>
-  }
-
-  export type ComparisonDiffCreateManyCurrentSheetInputEnvelope = {
-    data: ComparisonDiffCreateManyCurrentSheetInput | ComparisonDiffCreateManyCurrentSheetInput[]
   }
 
   export type AlignmentResultUpsertWithWhereUniqueWithoutTargetSheetInput = {
@@ -15574,6 +15574,55 @@ export namespace Prisma {
     pageHeight?: IntNullableFilter<"Box"> | number | null
     userModified?: BoolFilter<"Box"> | boolean
     sheetId?: IntFilter<"Box"> | number
+  }
+
+  export type ComparisonDiffUpsertWithWhereUniqueWithoutCurrentSheetInput = {
+    where: ComparisonDiffWhereUniqueInput
+    update: XOR<ComparisonDiffUpdateWithoutCurrentSheetInput, ComparisonDiffUncheckedUpdateWithoutCurrentSheetInput>
+    create: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput>
+  }
+
+  export type ComparisonDiffUpdateWithWhereUniqueWithoutCurrentSheetInput = {
+    where: ComparisonDiffWhereUniqueInput
+    data: XOR<ComparisonDiffUpdateWithoutCurrentSheetInput, ComparisonDiffUncheckedUpdateWithoutCurrentSheetInput>
+  }
+
+  export type ComparisonDiffUpdateManyWithWhereWithoutCurrentSheetInput = {
+    where: ComparisonDiffScalarWhereInput
+    data: XOR<ComparisonDiffUpdateManyMutationInput, ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetInput>
+  }
+
+  export type ComparisonDiffScalarWhereInput = {
+    AND?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
+    OR?: ComparisonDiffScalarWhereInput[]
+    NOT?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
+    id?: IntFilter<"ComparisonDiff"> | number
+    originalSheetId?: IntFilter<"ComparisonDiff"> | number
+    currentSheetId?: IntFilter<"ComparisonDiff"> | number
+    hasAdditions?: BoolFilter<"ComparisonDiff"> | boolean
+    hasDeletions?: BoolFilter<"ComparisonDiff"> | boolean
+    originalBbox?: StringNullableFilter<"ComparisonDiff"> | string | null
+    currentBbox?: StringNullableFilter<"ComparisonDiff"> | string | null
+    title?: StringNullableFilter<"ComparisonDiff"> | string | null
+    description?: StringNullableFilter<"ComparisonDiff"> | string | null
+    subContractorId?: IntNullableFilter<"ComparisonDiff"> | number | null
+    status?: StringFilter<"ComparisonDiff"> | string
+  }
+
+  export type ComparisonDiffUpsertWithWhereUniqueWithoutOriginalSheetInput = {
+    where: ComparisonDiffWhereUniqueInput
+    update: XOR<ComparisonDiffUpdateWithoutOriginalSheetInput, ComparisonDiffUncheckedUpdateWithoutOriginalSheetInput>
+    create: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput>
+  }
+
+  export type ComparisonDiffUpdateWithWhereUniqueWithoutOriginalSheetInput = {
+    where: ComparisonDiffWhereUniqueInput
+    data: XOR<ComparisonDiffUpdateWithoutOriginalSheetInput, ComparisonDiffUncheckedUpdateWithoutOriginalSheetInput>
+  }
+
+  export type ComparisonDiffUpdateManyWithWhereWithoutOriginalSheetInput = {
+    where: ComparisonDiffScalarWhereInput
+    data: XOR<ComparisonDiffUpdateManyMutationInput, ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetInput>
   }
 
   export type DistanceUpsertWithWhereUniqueWithoutSheetInput = {
@@ -15655,131 +15704,10 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     type?: NullableStringFieldUpdateOperationsInput | string | null
     path?: StringFieldUpdateOperationsInput | string
+    projectId?: IntFieldUpdateOperationsInput | number
     category?: NullableStringFieldUpdateOperationsInput | string | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     title?: NullableStringFieldUpdateOperationsInput | string | null
-    projectId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type ComparisonDiffUpsertWithWhereUniqueWithoutOriginalSheetInput = {
-    where: ComparisonDiffWhereUniqueInput
-    update: XOR<ComparisonDiffUpdateWithoutOriginalSheetInput, ComparisonDiffUncheckedUpdateWithoutOriginalSheetInput>
-    create: XOR<ComparisonDiffCreateWithoutOriginalSheetInput, ComparisonDiffUncheckedCreateWithoutOriginalSheetInput>
-  }
-
-  export type ComparisonDiffUpdateWithWhereUniqueWithoutOriginalSheetInput = {
-    where: ComparisonDiffWhereUniqueInput
-    data: XOR<ComparisonDiffUpdateWithoutOriginalSheetInput, ComparisonDiffUncheckedUpdateWithoutOriginalSheetInput>
-  }
-
-  export type ComparisonDiffUpdateManyWithWhereWithoutOriginalSheetInput = {
-    where: ComparisonDiffScalarWhereInput
-    data: XOR<ComparisonDiffUpdateManyMutationInput, ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetInput>
-  }
-
-  export type ComparisonDiffScalarWhereInput = {
-    AND?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
-    OR?: ComparisonDiffScalarWhereInput[]
-    NOT?: ComparisonDiffScalarWhereInput | ComparisonDiffScalarWhereInput[]
-    id?: IntFilter<"ComparisonDiff"> | number
-    originalSheetId?: IntFilter<"ComparisonDiff"> | number
-    currentSheetId?: IntFilter<"ComparisonDiff"> | number
-    hasAdditions?: BoolFilter<"ComparisonDiff"> | boolean
-    hasDeletions?: BoolFilter<"ComparisonDiff"> | boolean
-    originalBbox?: StringNullableFilter<"ComparisonDiff"> | string | null
-    currentBbox?: StringNullableFilter<"ComparisonDiff"> | string | null
-    title?: StringNullableFilter<"ComparisonDiff"> | string | null
-    description?: StringNullableFilter<"ComparisonDiff"> | string | null
-    subContractorId?: IntNullableFilter<"ComparisonDiff"> | number | null
-    status?: StringFilter<"ComparisonDiff"> | string
-  }
-
-  export type ComparisonDiffUpsertWithWhereUniqueWithoutCurrentSheetInput = {
-    where: ComparisonDiffWhereUniqueInput
-    update: XOR<ComparisonDiffUpdateWithoutCurrentSheetInput, ComparisonDiffUncheckedUpdateWithoutCurrentSheetInput>
-    create: XOR<ComparisonDiffCreateWithoutCurrentSheetInput, ComparisonDiffUncheckedCreateWithoutCurrentSheetInput>
-  }
-
-  export type ComparisonDiffUpdateWithWhereUniqueWithoutCurrentSheetInput = {
-    where: ComparisonDiffWhereUniqueInput
-    data: XOR<ComparisonDiffUpdateWithoutCurrentSheetInput, ComparisonDiffUncheckedUpdateWithoutCurrentSheetInput>
-  }
-
-  export type ComparisonDiffUpdateManyWithWhereWithoutCurrentSheetInput = {
-    where: ComparisonDiffScalarWhereInput
-    data: XOR<ComparisonDiffUpdateManyMutationInput, ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetInput>
-  }
-
-  export type SheetCreateWithoutOriginalDiffsInput = {
-    code: string
-    title?: string | null
-    type?: string | null
-    page?: number | null
-    status?: string
-    svgPath?: string | null
-    alignmentResults?: AlignmentResultCreateNestedManyWithoutTargetSheetInput
-    boxes?: BoxCreateNestedManyWithoutSheetInput
-    distances?: DistanceCreateNestedManyWithoutSheetInput
-    references?: ReferenceCreateNestedManyWithoutSheetInput
-    document: DocumentCreateNestedOneWithoutSheetsInput
-    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
-  }
-
-  export type SheetUncheckedCreateWithoutOriginalDiffsInput = {
-    id?: number
-    code: string
-    title?: string | null
-    type?: string | null
-    page?: number | null
-    status?: string
-    svgPath?: string | null
-    documentId: number
-    alignmentResults?: AlignmentResultUncheckedCreateNestedManyWithoutTargetSheetInput
-    boxes?: BoxUncheckedCreateNestedManyWithoutSheetInput
-    distances?: DistanceUncheckedCreateNestedManyWithoutSheetInput
-    references?: ReferenceUncheckedCreateNestedManyWithoutSheetInput
-    currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
-  }
-
-  export type SheetCreateOrConnectWithoutOriginalDiffsInput = {
-    where: SheetWhereUniqueInput
-    create: XOR<SheetCreateWithoutOriginalDiffsInput, SheetUncheckedCreateWithoutOriginalDiffsInput>
-  }
-
-  export type SheetCreateWithoutCurrentDiffsInput = {
-    code: string
-    title?: string | null
-    type?: string | null
-    page?: number | null
-    status?: string
-    svgPath?: string | null
-    alignmentResults?: AlignmentResultCreateNestedManyWithoutTargetSheetInput
-    boxes?: BoxCreateNestedManyWithoutSheetInput
-    distances?: DistanceCreateNestedManyWithoutSheetInput
-    references?: ReferenceCreateNestedManyWithoutSheetInput
-    document: DocumentCreateNestedOneWithoutSheetsInput
-    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
-  }
-
-  export type SheetUncheckedCreateWithoutCurrentDiffsInput = {
-    id?: number
-    code: string
-    title?: string | null
-    type?: string | null
-    page?: number | null
-    status?: string
-    svgPath?: string | null
-    documentId: number
-    alignmentResults?: AlignmentResultUncheckedCreateNestedManyWithoutTargetSheetInput
-    boxes?: BoxUncheckedCreateNestedManyWithoutSheetInput
-    distances?: DistanceUncheckedCreateNestedManyWithoutSheetInput
-    references?: ReferenceUncheckedCreateNestedManyWithoutSheetInput
-    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
-  }
-
-  export type SheetCreateOrConnectWithoutCurrentDiffsInput = {
-    where: SheetWhereUniqueInput
-    create: XOR<SheetCreateWithoutCurrentDiffsInput, SheetUncheckedCreateWithoutCurrentDiffsInput>
   }
 
   export type SubContractorCreateWithoutComparisonDiffsInput = {
@@ -15798,88 +15726,76 @@ export namespace Prisma {
     create: XOR<SubContractorCreateWithoutComparisonDiffsInput, SubContractorUncheckedCreateWithoutComparisonDiffsInput>
   }
 
-  export type SheetUpsertWithoutOriginalDiffsInput = {
-    update: XOR<SheetUpdateWithoutOriginalDiffsInput, SheetUncheckedUpdateWithoutOriginalDiffsInput>
-    create: XOR<SheetCreateWithoutOriginalDiffsInput, SheetUncheckedCreateWithoutOriginalDiffsInput>
-    where?: SheetWhereInput
+  export type SheetCreateWithoutCurrentDiffsInput = {
+    code: string
+    title?: string | null
+    type?: string | null
+    page?: number | null
+    status?: string
+    svgPath?: string | null
+    alignmentResults?: AlignmentResultCreateNestedManyWithoutTargetSheetInput
+    boxes?: BoxCreateNestedManyWithoutSheetInput
+    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
+    distances?: DistanceCreateNestedManyWithoutSheetInput
+    references?: ReferenceCreateNestedManyWithoutSheetInput
+    document: DocumentCreateNestedOneWithoutSheetsInput
   }
 
-  export type SheetUpdateToOneWithWhereWithoutOriginalDiffsInput = {
-    where?: SheetWhereInput
-    data: XOR<SheetUpdateWithoutOriginalDiffsInput, SheetUncheckedUpdateWithoutOriginalDiffsInput>
+  export type SheetUncheckedCreateWithoutCurrentDiffsInput = {
+    id?: number
+    code: string
+    title?: string | null
+    type?: string | null
+    page?: number | null
+    status?: string
+    svgPath?: string | null
+    documentId: number
+    alignmentResults?: AlignmentResultUncheckedCreateNestedManyWithoutTargetSheetInput
+    boxes?: BoxUncheckedCreateNestedManyWithoutSheetInput
+    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
+    distances?: DistanceUncheckedCreateNestedManyWithoutSheetInput
+    references?: ReferenceUncheckedCreateNestedManyWithoutSheetInput
   }
 
-  export type SheetUpdateWithoutOriginalDiffsInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    page?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: StringFieldUpdateOperationsInput | string
-    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
-    alignmentResults?: AlignmentResultUpdateManyWithoutTargetSheetNestedInput
-    boxes?: BoxUpdateManyWithoutSheetNestedInput
-    distances?: DistanceUpdateManyWithoutSheetNestedInput
-    references?: ReferenceUpdateManyWithoutSheetNestedInput
-    document?: DocumentUpdateOneRequiredWithoutSheetsNestedInput
-    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
-  }
-
-  export type SheetUncheckedUpdateWithoutOriginalDiffsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    code?: StringFieldUpdateOperationsInput | string
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    page?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: StringFieldUpdateOperationsInput | string
-    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
-    documentId?: IntFieldUpdateOperationsInput | number
-    alignmentResults?: AlignmentResultUncheckedUpdateManyWithoutTargetSheetNestedInput
-    boxes?: BoxUncheckedUpdateManyWithoutSheetNestedInput
-    distances?: DistanceUncheckedUpdateManyWithoutSheetNestedInput
-    references?: ReferenceUncheckedUpdateManyWithoutSheetNestedInput
-    currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
-  }
-
-  export type SheetUpsertWithoutCurrentDiffsInput = {
-    update: XOR<SheetUpdateWithoutCurrentDiffsInput, SheetUncheckedUpdateWithoutCurrentDiffsInput>
+  export type SheetCreateOrConnectWithoutCurrentDiffsInput = {
+    where: SheetWhereUniqueInput
     create: XOR<SheetCreateWithoutCurrentDiffsInput, SheetUncheckedCreateWithoutCurrentDiffsInput>
-    where?: SheetWhereInput
   }
 
-  export type SheetUpdateToOneWithWhereWithoutCurrentDiffsInput = {
-    where?: SheetWhereInput
-    data: XOR<SheetUpdateWithoutCurrentDiffsInput, SheetUncheckedUpdateWithoutCurrentDiffsInput>
+  export type SheetCreateWithoutOriginalDiffsInput = {
+    code: string
+    title?: string | null
+    type?: string | null
+    page?: number | null
+    status?: string
+    svgPath?: string | null
+    alignmentResults?: AlignmentResultCreateNestedManyWithoutTargetSheetInput
+    boxes?: BoxCreateNestedManyWithoutSheetInput
+    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
+    distances?: DistanceCreateNestedManyWithoutSheetInput
+    references?: ReferenceCreateNestedManyWithoutSheetInput
+    document: DocumentCreateNestedOneWithoutSheetsInput
   }
 
-  export type SheetUpdateWithoutCurrentDiffsInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    page?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: StringFieldUpdateOperationsInput | string
-    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
-    alignmentResults?: AlignmentResultUpdateManyWithoutTargetSheetNestedInput
-    boxes?: BoxUpdateManyWithoutSheetNestedInput
-    distances?: DistanceUpdateManyWithoutSheetNestedInput
-    references?: ReferenceUpdateManyWithoutSheetNestedInput
-    document?: DocumentUpdateOneRequiredWithoutSheetsNestedInput
-    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
+  export type SheetUncheckedCreateWithoutOriginalDiffsInput = {
+    id?: number
+    code: string
+    title?: string | null
+    type?: string | null
+    page?: number | null
+    status?: string
+    svgPath?: string | null
+    documentId: number
+    alignmentResults?: AlignmentResultUncheckedCreateNestedManyWithoutTargetSheetInput
+    boxes?: BoxUncheckedCreateNestedManyWithoutSheetInput
+    currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
+    distances?: DistanceUncheckedCreateNestedManyWithoutSheetInput
+    references?: ReferenceUncheckedCreateNestedManyWithoutSheetInput
   }
 
-  export type SheetUncheckedUpdateWithoutCurrentDiffsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    code?: StringFieldUpdateOperationsInput | string
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    page?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: StringFieldUpdateOperationsInput | string
-    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
-    documentId?: IntFieldUpdateOperationsInput | number
-    alignmentResults?: AlignmentResultUncheckedUpdateManyWithoutTargetSheetNestedInput
-    boxes?: BoxUncheckedUpdateManyWithoutSheetNestedInput
-    distances?: DistanceUncheckedUpdateManyWithoutSheetNestedInput
-    references?: ReferenceUncheckedUpdateManyWithoutSheetNestedInput
-    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
+  export type SheetCreateOrConnectWithoutOriginalDiffsInput = {
+    where: SheetWhereUniqueInput
+    create: XOR<SheetCreateWithoutOriginalDiffsInput, SheetUncheckedCreateWithoutOriginalDiffsInput>
   }
 
   export type SubContractorUpsertWithoutComparisonDiffsInput = {
@@ -15904,6 +15820,90 @@ export namespace Prisma {
     tradeName?: StringFieldUpdateOperationsInput | string
   }
 
+  export type SheetUpsertWithoutCurrentDiffsInput = {
+    update: XOR<SheetUpdateWithoutCurrentDiffsInput, SheetUncheckedUpdateWithoutCurrentDiffsInput>
+    create: XOR<SheetCreateWithoutCurrentDiffsInput, SheetUncheckedCreateWithoutCurrentDiffsInput>
+    where?: SheetWhereInput
+  }
+
+  export type SheetUpdateToOneWithWhereWithoutCurrentDiffsInput = {
+    where?: SheetWhereInput
+    data: XOR<SheetUpdateWithoutCurrentDiffsInput, SheetUncheckedUpdateWithoutCurrentDiffsInput>
+  }
+
+  export type SheetUpdateWithoutCurrentDiffsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    page?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
+    alignmentResults?: AlignmentResultUpdateManyWithoutTargetSheetNestedInput
+    boxes?: BoxUpdateManyWithoutSheetNestedInput
+    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
+    distances?: DistanceUpdateManyWithoutSheetNestedInput
+    references?: ReferenceUpdateManyWithoutSheetNestedInput
+    document?: DocumentUpdateOneRequiredWithoutSheetsNestedInput
+  }
+
+  export type SheetUncheckedUpdateWithoutCurrentDiffsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    page?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
+    documentId?: IntFieldUpdateOperationsInput | number
+    alignmentResults?: AlignmentResultUncheckedUpdateManyWithoutTargetSheetNestedInput
+    boxes?: BoxUncheckedUpdateManyWithoutSheetNestedInput
+    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
+    distances?: DistanceUncheckedUpdateManyWithoutSheetNestedInput
+    references?: ReferenceUncheckedUpdateManyWithoutSheetNestedInput
+  }
+
+  export type SheetUpsertWithoutOriginalDiffsInput = {
+    update: XOR<SheetUpdateWithoutOriginalDiffsInput, SheetUncheckedUpdateWithoutOriginalDiffsInput>
+    create: XOR<SheetCreateWithoutOriginalDiffsInput, SheetUncheckedCreateWithoutOriginalDiffsInput>
+    where?: SheetWhereInput
+  }
+
+  export type SheetUpdateToOneWithWhereWithoutOriginalDiffsInput = {
+    where?: SheetWhereInput
+    data: XOR<SheetUpdateWithoutOriginalDiffsInput, SheetUncheckedUpdateWithoutOriginalDiffsInput>
+  }
+
+  export type SheetUpdateWithoutOriginalDiffsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    page?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
+    alignmentResults?: AlignmentResultUpdateManyWithoutTargetSheetNestedInput
+    boxes?: BoxUpdateManyWithoutSheetNestedInput
+    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
+    distances?: DistanceUpdateManyWithoutSheetNestedInput
+    references?: ReferenceUpdateManyWithoutSheetNestedInput
+    document?: DocumentUpdateOneRequiredWithoutSheetsNestedInput
+  }
+
+  export type SheetUncheckedUpdateWithoutOriginalDiffsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    page?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
+    documentId?: IntFieldUpdateOperationsInput | number
+    alignmentResults?: AlignmentResultUncheckedUpdateManyWithoutTargetSheetNestedInput
+    boxes?: BoxUncheckedUpdateManyWithoutSheetNestedInput
+    currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
+    distances?: DistanceUncheckedUpdateManyWithoutSheetNestedInput
+    references?: ReferenceUncheckedUpdateManyWithoutSheetNestedInput
+  }
+
   export type ComparisonDiffCreateWithoutSubContractorInput = {
     hasAdditions?: boolean
     hasDeletions?: boolean
@@ -15912,8 +15912,8 @@ export namespace Prisma {
     title?: string | null
     description?: string | null
     status?: string
-    originalSheet: SheetCreateNestedOneWithoutOriginalDiffsInput
     currentSheet: SheetCreateNestedOneWithoutCurrentDiffsInput
+    originalSheet: SheetCreateNestedOneWithoutOriginalDiffsInput
   }
 
   export type ComparisonDiffUncheckedCreateWithoutSubContractorInput = {
@@ -15988,11 +15988,11 @@ export namespace Prisma {
     status?: string
     svgPath?: string | null
     alignmentResults?: AlignmentResultCreateNestedManyWithoutTargetSheetInput
+    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
     distances?: DistanceCreateNestedManyWithoutSheetInput
     references?: ReferenceCreateNestedManyWithoutSheetInput
     document: DocumentCreateNestedOneWithoutSheetsInput
-    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
-    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
   }
 
   export type SheetUncheckedCreateWithoutBoxesInput = {
@@ -16005,10 +16005,10 @@ export namespace Prisma {
     svgPath?: string | null
     documentId: number
     alignmentResults?: AlignmentResultUncheckedCreateNestedManyWithoutTargetSheetInput
+    currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
     distances?: DistanceUncheckedCreateNestedManyWithoutSheetInput
     references?: ReferenceUncheckedCreateNestedManyWithoutSheetInput
-    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
-    currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
   }
 
   export type SheetCreateOrConnectWithoutBoxesInput = {
@@ -16051,11 +16051,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     svgPath?: NullableStringFieldUpdateOperationsInput | string | null
     alignmentResults?: AlignmentResultUpdateManyWithoutTargetSheetNestedInput
+    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
+    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
     distances?: DistanceUpdateManyWithoutSheetNestedInput
     references?: ReferenceUpdateManyWithoutSheetNestedInput
     document?: DocumentUpdateOneRequiredWithoutSheetsNestedInput
-    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
-    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
   }
 
   export type SheetUncheckedUpdateWithoutBoxesInput = {
@@ -16068,10 +16068,10 @@ export namespace Prisma {
     svgPath?: NullableStringFieldUpdateOperationsInput | string | null
     documentId?: IntFieldUpdateOperationsInput | number
     alignmentResults?: AlignmentResultUncheckedUpdateManyWithoutTargetSheetNestedInput
+    currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
+    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
     distances?: DistanceUncheckedUpdateManyWithoutSheetNestedInput
     references?: ReferenceUncheckedUpdateManyWithoutSheetNestedInput
-    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
-    currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
   }
 
   export type SheetCreateWithoutReferencesInput = {
@@ -16083,10 +16083,10 @@ export namespace Prisma {
     svgPath?: string | null
     alignmentResults?: AlignmentResultCreateNestedManyWithoutTargetSheetInput
     boxes?: BoxCreateNestedManyWithoutSheetInput
+    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
     distances?: DistanceCreateNestedManyWithoutSheetInput
     document: DocumentCreateNestedOneWithoutSheetsInput
-    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
-    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
   }
 
   export type SheetUncheckedCreateWithoutReferencesInput = {
@@ -16100,9 +16100,9 @@ export namespace Prisma {
     documentId: number
     alignmentResults?: AlignmentResultUncheckedCreateNestedManyWithoutTargetSheetInput
     boxes?: BoxUncheckedCreateNestedManyWithoutSheetInput
-    distances?: DistanceUncheckedCreateNestedManyWithoutSheetInput
-    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
     currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
+    distances?: DistanceUncheckedCreateNestedManyWithoutSheetInput
   }
 
   export type SheetCreateOrConnectWithoutReferencesInput = {
@@ -16130,10 +16130,10 @@ export namespace Prisma {
     svgPath?: NullableStringFieldUpdateOperationsInput | string | null
     alignmentResults?: AlignmentResultUpdateManyWithoutTargetSheetNestedInput
     boxes?: BoxUpdateManyWithoutSheetNestedInput
+    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
+    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
     distances?: DistanceUpdateManyWithoutSheetNestedInput
     document?: DocumentUpdateOneRequiredWithoutSheetsNestedInput
-    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
-    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
   }
 
   export type SheetUncheckedUpdateWithoutReferencesInput = {
@@ -16147,9 +16147,9 @@ export namespace Prisma {
     documentId?: IntFieldUpdateOperationsInput | number
     alignmentResults?: AlignmentResultUncheckedUpdateManyWithoutTargetSheetNestedInput
     boxes?: BoxUncheckedUpdateManyWithoutSheetNestedInput
-    distances?: DistanceUncheckedUpdateManyWithoutSheetNestedInput
-    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
     currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
+    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
+    distances?: DistanceUncheckedUpdateManyWithoutSheetNestedInput
   }
 
   export type SheetCreateWithoutDistancesInput = {
@@ -16161,10 +16161,10 @@ export namespace Prisma {
     svgPath?: string | null
     alignmentResults?: AlignmentResultCreateNestedManyWithoutTargetSheetInput
     boxes?: BoxCreateNestedManyWithoutSheetInput
+    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
     references?: ReferenceCreateNestedManyWithoutSheetInput
     document: DocumentCreateNestedOneWithoutSheetsInput
-    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
-    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
   }
 
   export type SheetUncheckedCreateWithoutDistancesInput = {
@@ -16178,9 +16178,9 @@ export namespace Prisma {
     documentId: number
     alignmentResults?: AlignmentResultUncheckedCreateNestedManyWithoutTargetSheetInput
     boxes?: BoxUncheckedCreateNestedManyWithoutSheetInput
-    references?: ReferenceUncheckedCreateNestedManyWithoutSheetInput
-    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
     currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
+    references?: ReferenceUncheckedCreateNestedManyWithoutSheetInput
   }
 
   export type SheetCreateOrConnectWithoutDistancesInput = {
@@ -16208,10 +16208,10 @@ export namespace Prisma {
     svgPath?: NullableStringFieldUpdateOperationsInput | string | null
     alignmentResults?: AlignmentResultUpdateManyWithoutTargetSheetNestedInput
     boxes?: BoxUpdateManyWithoutSheetNestedInput
+    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
+    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
     references?: ReferenceUpdateManyWithoutSheetNestedInput
     document?: DocumentUpdateOneRequiredWithoutSheetsNestedInput
-    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
-    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
   }
 
   export type SheetUncheckedUpdateWithoutDistancesInput = {
@@ -16225,45 +16225,9 @@ export namespace Prisma {
     documentId?: IntFieldUpdateOperationsInput | number
     alignmentResults?: AlignmentResultUncheckedUpdateManyWithoutTargetSheetNestedInput
     boxes?: BoxUncheckedUpdateManyWithoutSheetNestedInput
-    references?: ReferenceUncheckedUpdateManyWithoutSheetNestedInput
-    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
     currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
-  }
-
-  export type SheetCreateWithoutAlignmentResultsInput = {
-    code: string
-    title?: string | null
-    type?: string | null
-    page?: number | null
-    status?: string
-    svgPath?: string | null
-    boxes?: BoxCreateNestedManyWithoutSheetInput
-    distances?: DistanceCreateNestedManyWithoutSheetInput
-    references?: ReferenceCreateNestedManyWithoutSheetInput
-    document: DocumentCreateNestedOneWithoutSheetsInput
-    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
-    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
-  }
-
-  export type SheetUncheckedCreateWithoutAlignmentResultsInput = {
-    id?: number
-    code: string
-    title?: string | null
-    type?: string | null
-    page?: number | null
-    status?: string
-    svgPath?: string | null
-    documentId: number
-    boxes?: BoxUncheckedCreateNestedManyWithoutSheetInput
-    distances?: DistanceUncheckedCreateNestedManyWithoutSheetInput
-    references?: ReferenceUncheckedCreateNestedManyWithoutSheetInput
-    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
-    currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
-  }
-
-  export type SheetCreateOrConnectWithoutAlignmentResultsInput = {
-    where: SheetWhereUniqueInput
-    create: XOR<SheetCreateWithoutAlignmentResultsInput, SheetUncheckedCreateWithoutAlignmentResultsInput>
+    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
+    references?: ReferenceUncheckedUpdateManyWithoutSheetNestedInput
   }
 
   export type BoxCreateWithoutAlignmentResultsInput = {
@@ -16302,46 +16266,40 @@ export namespace Prisma {
     create: XOR<BoxCreateWithoutAlignmentResultsInput, BoxUncheckedCreateWithoutAlignmentResultsInput>
   }
 
-  export type SheetUpsertWithoutAlignmentResultsInput = {
-    update: XOR<SheetUpdateWithoutAlignmentResultsInput, SheetUncheckedUpdateWithoutAlignmentResultsInput>
+  export type SheetCreateWithoutAlignmentResultsInput = {
+    code: string
+    title?: string | null
+    type?: string | null
+    page?: number | null
+    status?: string
+    svgPath?: string | null
+    boxes?: BoxCreateNestedManyWithoutSheetInput
+    currentDiffs?: ComparisonDiffCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffCreateNestedManyWithoutOriginalSheetInput
+    distances?: DistanceCreateNestedManyWithoutSheetInput
+    references?: ReferenceCreateNestedManyWithoutSheetInput
+    document: DocumentCreateNestedOneWithoutSheetsInput
+  }
+
+  export type SheetUncheckedCreateWithoutAlignmentResultsInput = {
+    id?: number
+    code: string
+    title?: string | null
+    type?: string | null
+    page?: number | null
+    status?: string
+    svgPath?: string | null
+    documentId: number
+    boxes?: BoxUncheckedCreateNestedManyWithoutSheetInput
+    currentDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutCurrentSheetInput
+    originalDiffs?: ComparisonDiffUncheckedCreateNestedManyWithoutOriginalSheetInput
+    distances?: DistanceUncheckedCreateNestedManyWithoutSheetInput
+    references?: ReferenceUncheckedCreateNestedManyWithoutSheetInput
+  }
+
+  export type SheetCreateOrConnectWithoutAlignmentResultsInput = {
+    where: SheetWhereUniqueInput
     create: XOR<SheetCreateWithoutAlignmentResultsInput, SheetUncheckedCreateWithoutAlignmentResultsInput>
-    where?: SheetWhereInput
-  }
-
-  export type SheetUpdateToOneWithWhereWithoutAlignmentResultsInput = {
-    where?: SheetWhereInput
-    data: XOR<SheetUpdateWithoutAlignmentResultsInput, SheetUncheckedUpdateWithoutAlignmentResultsInput>
-  }
-
-  export type SheetUpdateWithoutAlignmentResultsInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    page?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: StringFieldUpdateOperationsInput | string
-    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
-    boxes?: BoxUpdateManyWithoutSheetNestedInput
-    distances?: DistanceUpdateManyWithoutSheetNestedInput
-    references?: ReferenceUpdateManyWithoutSheetNestedInput
-    document?: DocumentUpdateOneRequiredWithoutSheetsNestedInput
-    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
-    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
-  }
-
-  export type SheetUncheckedUpdateWithoutAlignmentResultsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    code?: StringFieldUpdateOperationsInput | string
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    page?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: StringFieldUpdateOperationsInput | string
-    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
-    documentId?: IntFieldUpdateOperationsInput | number
-    boxes?: BoxUncheckedUpdateManyWithoutSheetNestedInput
-    distances?: DistanceUncheckedUpdateManyWithoutSheetNestedInput
-    references?: ReferenceUncheckedUpdateManyWithoutSheetNestedInput
-    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
-    currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
   }
 
   export type BoxUpsertWithoutAlignmentResultsInput = {
@@ -16384,6 +16342,48 @@ export namespace Prisma {
     pageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     userModified?: BoolFieldUpdateOperationsInput | boolean
     sheetId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SheetUpsertWithoutAlignmentResultsInput = {
+    update: XOR<SheetUpdateWithoutAlignmentResultsInput, SheetUncheckedUpdateWithoutAlignmentResultsInput>
+    create: XOR<SheetCreateWithoutAlignmentResultsInput, SheetUncheckedCreateWithoutAlignmentResultsInput>
+    where?: SheetWhereInput
+  }
+
+  export type SheetUpdateToOneWithWhereWithoutAlignmentResultsInput = {
+    where?: SheetWhereInput
+    data: XOR<SheetUpdateWithoutAlignmentResultsInput, SheetUncheckedUpdateWithoutAlignmentResultsInput>
+  }
+
+  export type SheetUpdateWithoutAlignmentResultsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    page?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
+    boxes?: BoxUpdateManyWithoutSheetNestedInput
+    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
+    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
+    distances?: DistanceUpdateManyWithoutSheetNestedInput
+    references?: ReferenceUpdateManyWithoutSheetNestedInput
+    document?: DocumentUpdateOneRequiredWithoutSheetsNestedInput
+  }
+
+  export type SheetUncheckedUpdateWithoutAlignmentResultsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    page?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    svgPath?: NullableStringFieldUpdateOperationsInput | string | null
+    documentId?: IntFieldUpdateOperationsInput | number
+    boxes?: BoxUncheckedUpdateManyWithoutSheetNestedInput
+    currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
+    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
+    distances?: DistanceUncheckedUpdateManyWithoutSheetNestedInput
+    references?: ReferenceUncheckedUpdateManyWithoutSheetNestedInput
   }
 
   export type DocumentCreateManyProjectInput = {
@@ -16442,10 +16442,10 @@ export namespace Prisma {
     svgPath?: NullableStringFieldUpdateOperationsInput | string | null
     alignmentResults?: AlignmentResultUpdateManyWithoutTargetSheetNestedInput
     boxes?: BoxUpdateManyWithoutSheetNestedInput
+    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
+    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
     distances?: DistanceUpdateManyWithoutSheetNestedInput
     references?: ReferenceUpdateManyWithoutSheetNestedInput
-    originalDiffs?: ComparisonDiffUpdateManyWithoutOriginalSheetNestedInput
-    currentDiffs?: ComparisonDiffUpdateManyWithoutCurrentSheetNestedInput
   }
 
   export type SheetUncheckedUpdateWithoutDocumentInput = {
@@ -16458,10 +16458,10 @@ export namespace Prisma {
     svgPath?: NullableStringFieldUpdateOperationsInput | string | null
     alignmentResults?: AlignmentResultUncheckedUpdateManyWithoutTargetSheetNestedInput
     boxes?: BoxUncheckedUpdateManyWithoutSheetNestedInput
+    currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
+    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
     distances?: DistanceUncheckedUpdateManyWithoutSheetNestedInput
     references?: ReferenceUncheckedUpdateManyWithoutSheetNestedInput
-    originalDiffs?: ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetNestedInput
-    currentDiffs?: ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetNestedInput
   }
 
   export type SheetUncheckedUpdateManyWithoutDocumentInput = {
@@ -16498,19 +16498,17 @@ export namespace Prisma {
     userModified?: boolean
   }
 
-  export type DistanceCreateManySheetInput = {
+  export type ComparisonDiffCreateManyCurrentSheetInput = {
     id?: number
-    pointA: string
-    pointB: string
-    length: number
-    pixel_distance: number
-  }
-
-  export type ReferenceCreateManySheetInput = {
-    id?: number
-    coordinates: string
-    code: string
-    sheetCode: string
+    originalSheetId: number
+    hasAdditions?: boolean
+    hasDeletions?: boolean
+    originalBbox?: string | null
+    currentBbox?: string | null
+    title?: string | null
+    description?: string | null
+    subContractorId?: number | null
+    status?: string
   }
 
   export type ComparisonDiffCreateManyOriginalSheetInput = {
@@ -16526,17 +16524,19 @@ export namespace Prisma {
     status?: string
   }
 
-  export type ComparisonDiffCreateManyCurrentSheetInput = {
+  export type DistanceCreateManySheetInput = {
     id?: number
-    originalSheetId: number
-    hasAdditions?: boolean
-    hasDeletions?: boolean
-    originalBbox?: string | null
-    currentBbox?: string | null
-    title?: string | null
-    description?: string | null
-    subContractorId?: number | null
-    status?: string
+    pointA: string
+    pointB: string
+    length: number
+    pixel_distance: number
+  }
+
+  export type ReferenceCreateManySheetInput = {
+    id?: number
+    coordinates: string
+    code: string
+    sheetCode: string
   }
 
   export type AlignmentResultUpdateWithoutTargetSheetInput = {
@@ -16611,6 +16611,82 @@ export namespace Prisma {
     userModified?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type ComparisonDiffUpdateWithoutCurrentSheetInput = {
+    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
+    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
+    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    subContractor?: SubContractorUpdateOneWithoutComparisonDiffsNestedInput
+    originalSheet?: SheetUpdateOneRequiredWithoutOriginalDiffsNestedInput
+  }
+
+  export type ComparisonDiffUncheckedUpdateWithoutCurrentSheetInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    originalSheetId?: IntFieldUpdateOperationsInput | number
+    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
+    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
+    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    subContractorId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    originalSheetId?: IntFieldUpdateOperationsInput | number
+    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
+    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
+    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    subContractorId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ComparisonDiffUpdateWithoutOriginalSheetInput = {
+    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
+    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
+    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    subContractor?: SubContractorUpdateOneWithoutComparisonDiffsNestedInput
+    currentSheet?: SheetUpdateOneRequiredWithoutCurrentDiffsNestedInput
+  }
+
+  export type ComparisonDiffUncheckedUpdateWithoutOriginalSheetInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    currentSheetId?: IntFieldUpdateOperationsInput | number
+    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
+    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
+    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    subContractorId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    currentSheetId?: IntFieldUpdateOperationsInput | number
+    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
+    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
+    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    subContractorId?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+  }
+
   export type DistanceUpdateWithoutSheetInput = {
     pointA?: StringFieldUpdateOperationsInput | string
     pointB?: StringFieldUpdateOperationsInput | string
@@ -16654,82 +16730,6 @@ export namespace Prisma {
     sheetCode?: StringFieldUpdateOperationsInput | string
   }
 
-  export type ComparisonDiffUpdateWithoutOriginalSheetInput = {
-    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
-    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
-    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    currentSheet?: SheetUpdateOneRequiredWithoutCurrentDiffsNestedInput
-    subContractor?: SubContractorUpdateOneWithoutComparisonDiffsNestedInput
-  }
-
-  export type ComparisonDiffUncheckedUpdateWithoutOriginalSheetInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    currentSheetId?: IntFieldUpdateOperationsInput | number
-    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
-    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
-    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    subContractorId?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type ComparisonDiffUncheckedUpdateManyWithoutOriginalSheetInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    currentSheetId?: IntFieldUpdateOperationsInput | number
-    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
-    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
-    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    subContractorId?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type ComparisonDiffUpdateWithoutCurrentSheetInput = {
-    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
-    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
-    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    originalSheet?: SheetUpdateOneRequiredWithoutOriginalDiffsNestedInput
-    subContractor?: SubContractorUpdateOneWithoutComparisonDiffsNestedInput
-  }
-
-  export type ComparisonDiffUncheckedUpdateWithoutCurrentSheetInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    originalSheetId?: IntFieldUpdateOperationsInput | number
-    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
-    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
-    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    subContractorId?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type ComparisonDiffUncheckedUpdateManyWithoutCurrentSheetInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    originalSheetId?: IntFieldUpdateOperationsInput | number
-    hasAdditions?: BoolFieldUpdateOperationsInput | boolean
-    hasDeletions?: BoolFieldUpdateOperationsInput | boolean
-    originalBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    currentBbox?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    subContractorId?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: StringFieldUpdateOperationsInput | string
-  }
-
   export type ComparisonDiffCreateManySubContractorInput = {
     id?: number
     originalSheetId: number
@@ -16751,8 +16751,8 @@ export namespace Prisma {
     title?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
-    originalSheet?: SheetUpdateOneRequiredWithoutOriginalDiffsNestedInput
     currentSheet?: SheetUpdateOneRequiredWithoutCurrentDiffsNestedInput
+    originalSheet?: SheetUpdateOneRequiredWithoutOriginalDiffsNestedInput
   }
 
   export type ComparisonDiffUncheckedUpdateWithoutSubContractorInput = {

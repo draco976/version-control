@@ -1,11 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 
+const { initializeDatabase } = require('../../../../scripts/init-db')
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
+    // Initialize database if empty
+    const projectCount = await prisma.project.count()
+    if (projectCount === 0) {
+      await initializeDatabase()
+    }
+    
     const projectId = parseInt(params.id)
     
     const project = await prisma.project.findUnique({

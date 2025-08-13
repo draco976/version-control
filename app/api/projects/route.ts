@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 
+const { initializeDatabase } = require('../../../scripts/init-db')
+
 export async function GET(request: NextRequest) {
   try {
+    // Initialize database if empty
+    const projectCount = await prisma.project.count()
+    if (projectCount === 0) {
+      await initializeDatabase()
+    }
+    
     const projects = await prisma.project.findMany({
       include: {
         documents: {

@@ -1,13 +1,7 @@
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import type React from "react"
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
 import "./globals.css"
-
-const inter = Inter({ subsets: ["latin"] })
-
-export const metadata: Metadata = {
-  title: "Version Control - Document Comparison",
-  description: "Compare document versions and track sheet changes",
-}
 
 export default function RootLayout({
   children,
@@ -16,7 +10,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <SidebarProvider>
+          <AppSidebar />
+          <main className="flex-1">{children}</main>
+        </SidebarProvider>
+      </body>
     </html>
   )
 }
+
+export const metadata = {
+      generator: 'v0.dev'
+    };
