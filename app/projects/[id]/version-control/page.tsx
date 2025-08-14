@@ -236,6 +236,7 @@ export default function VersionControlPage() {
   const [error] = useState<string | null>(null)
   const [activeSheetTab, setActiveSheetTab] = useState<string>("")
   const [isNewAdditionsOpen, setIsNewAdditionsOpen] = useState(true)
+  const [isA62DetailsOpen, setIsA62DetailsOpen] = useState(true)
   const [isExistingChangesOpen, setIsExistingChangesOpen] = useState(true)
 
   // Initialize static data
@@ -277,6 +278,29 @@ export default function VersionControlPage() {
         ]
       },
       {
+        id: 997,
+        title: "Addendum — New Detail: Window Sill Detail (A6.2 - 6)",
+        description: "New window sill detail added to address waterproofing and structural requirements. Review detail specifications and coordination with window installation.",
+        status: "review",
+        hasAdditions: true,
+        hasDeletions: false,
+        currentSheet: sheets.find(s => s.code === "A6.2")!,
+        subcontractorsToNotify: [
+          {
+            trade: "Glazing/Windows",
+            reason: "install per sill detail requirements."
+          },
+          {
+            trade: "Envelope/Waterproofing",
+            reason: "flashing and sealant per detail."
+          },
+          {
+            trade: "Framing",
+            reason: "rough opening and support framing."
+          }
+        ]
+      },
+      {
         id: 998,
         title: "Addendum — New Dimension: Bedroom 1 (G06) = 11′-0 5/8″ (finish-to-finish)",
         description: "Locks room width; shift partitions if needed. Re-check door/window centering and any casework.",
@@ -311,6 +335,54 @@ export default function VersionControlPage() {
       {
         id: 996,
         title: "Callout Change at Hallway E04/E04.1: \"AE-2\" → \"A-2\"",
+        description: "Callout on the angled wall revised to A-2. Use the A-2 keynote/wall type for materials, rating, and finish. Update takeoffs and any shops that referenced AE-2.",
+        status: "review",
+        hasAdditions: false,
+        hasDeletions: false,
+        originalSheet: sheets.find(s => s.code === "A6.2" && s.documentId === 6)!,
+        currentSheet: sheets.find(s => s.code === "A6.2" && s.documentId === 7)!,
+        subcontractorsToNotify: [
+          {
+            trade: "Framing/Drywall",
+            reason: "build per A-2."
+          },
+          {
+            trade: "Electrical",
+            reason: "box/putty pad requirements per A-2."
+          },
+          {
+            trade: "Paint/Finishes",
+            reason: "finish spec per A-2."
+          }
+        ]
+      },
+      {
+        id: 995,
+        title: "Callout Change at Bedroom E03: \"AE-2\" → \"A-2\"",
+        description: "Callout on the angled wall revised to A-2. Use the A-2 keynote/wall type for materials, rating, and finish. Update takeoffs and any shops that referenced AE-2.",
+        status: "review",
+        hasAdditions: false,
+        hasDeletions: false,
+        originalSheet: sheets.find(s => s.code === "A6.2" && s.documentId === 6)!,
+        currentSheet: sheets.find(s => s.code === "A6.2" && s.documentId === 7)!,
+        subcontractorsToNotify: [
+          {
+            trade: "Framing/Drywall",
+            reason: "build per A-2."
+          },
+          {
+            trade: "Electrical",
+            reason: "box/putty pad requirements per A-2."
+          },
+          {
+            trade: "Paint/Finishes",
+            reason: "finish spec per A-2."
+          }
+        ]
+      },
+      {
+        id: 993,
+        title: "Callout Change near Bedroom E03.2: \"AE-2\" → \"A-2\"",
         description: "Callout on the angled wall revised to A-2. Use the A-2 keynote/wall type for materials, rating, and finish. Update takeoffs and any shops that referenced AE-2.",
         status: "review",
         hasAdditions: false,
@@ -484,7 +556,7 @@ export default function VersionControlPage() {
       </header>
 
       {/* Uses Section */}
-      <div className="border-b bg-gradient-to-r from-blue-50 via-green-50 to-orange-50 px-8 py-6 w-full">
+      {/* <div className="border-b bg-gradient-to-r from-blue-50 via-green-50 to-orange-50 px-8 py-6 w-full">
         <div className="flex flex-col space-y-4">
           <div className="text-center">
             <span className="text-2xl font-bold text-gray-800">Uses:</span>
@@ -504,7 +576,7 @@ export default function VersionControlPage() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="flex flex-1 flex-col gap-6 p-6">
         {/* Document Cards */}
@@ -572,9 +644,11 @@ export default function VersionControlPage() {
           ))}
         </div>
 
-        {/* Side-by-Side PDF Viewer */}
-        <div className="h-[70vh] border rounded-lg bg-gray-50">
-          <div className="grid grid-cols-2 h-full">
+        {/* PDF Viewer with Change Logs on Right */}
+        <div className="grid grid-cols-4 gap-6 h-[60vh]">
+          {/* PDF Comparison Viewer - Takes up 3/4 of width */}
+          <div className="col-span-3 border rounded-lg bg-gray-50">
+            <div className="grid grid-cols-2 h-full">
             {/* Left PDF - Original */}
             <div className="border-r bg-white">
               <div className="h-12 border-b bg-red-50 flex items-center justify-between px-4">
@@ -605,8 +679,8 @@ export default function VersionControlPage() {
                   e.currentTarget.style.cursor = 'grab';
                 }}
               >
-                {selectedChangeLog?.id === 999 ? (
-                  // Show gray background for ceiling plan original
+                {selectedChangeLog?.id === 999 || selectedChangeLog?.id === 997 ? (
+                  // Show gray background for new items with no original
                   <div className="w-full h-full bg-gray-300 flex items-center justify-center">
                     <span className="text-gray-500 text-lg">No Original</span>
                   </div>
@@ -615,8 +689,10 @@ export default function VersionControlPage() {
                     src={selectedChangeLog ? 
                       selectedChangeLog.id === 9999 ? "/old-complete.png" :      // View All uses old-complete
                       selectedChangeLog.id === 998 ? "/display_left_2.png" :     // Bedroom uses display_left_2
-                      selectedChangeLog.id === 996 ? "/display_left_3.png" :     // Callout uses display_left_3  
+                      selectedChangeLog.id === 996 ? "/display_left_3.png" :     // Callout uses display_left_3
+                      selectedChangeLog.id === 995 ? "/display_left_5.png" :     // Additional Window Detail uses display_left_5
                       selectedChangeLog.id === 994 ? "/display_left_4.png" :     // Window uses display_left_4
+                      selectedChangeLog.id === 993 ? "/display_left_6.png" :     // Structural Connection uses display_left_6
                       "/OLD_1.png" 
                       : "/OLD_1.png"}
                     alt="Original PDF" 
@@ -665,9 +741,12 @@ export default function VersionControlPage() {
                   src={selectedChangeLog ? 
                     selectedChangeLog.id === 9999 ? "/new-complete.png" :      // View All uses new-complete
                     selectedChangeLog.id === 999 ? "/display_centre_1.png" :  // Ceiling plan uses centre view
+                    selectedChangeLog.id === 997 ? "/new_4.png" :              // Window Sill Detail uses new_4.png
                     selectedChangeLog.id === 998 ? "/display_right_2.png" :    // Bedroom uses display_right_2
                     selectedChangeLog.id === 996 ? "/display_right_3.png" :    // Callout uses display_right_3
+                    selectedChangeLog.id === 995 ? "/display_right_5.png" :    // Additional Window Detail uses display_right_5
                     selectedChangeLog.id === 994 ? "/display_right_4.png" :    // Window uses display_right_4
+                    selectedChangeLog.id === 993 ? "/display_right_6.png" :    // Structural Connection uses display_right_6
                     "/NEW_1.png" 
                     : "/NEW_1.png"}
                   alt="Current PDF" 
@@ -680,526 +759,255 @@ export default function VersionControlPage() {
                 />
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Horizontal Change Logs */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold">Change Logs</h3>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">
-                {comparisonDiffs.filter(diff => diff.status === 'review').length} changes pending review
-              </span>
             </div>
           </div>
           
-          {/* Dropdown Layout */}
-          <div className="flex gap-6 w-full">
-            {/* New Addition Drawings Section - 25% width */}
-            <div className="w-1/4 space-y-3 bg-blue-50 p-4 rounded">
-              <h4 className="text-md font-medium text-blue-700 border-b border-blue-200 pb-1">New Addition Drawings</h4>
-              <div className="flex items-center justify-between mt-2 mb-3">
-                <h3 className="text-lg font-semibold text-gray-800">Level 1 Reflected Ceiling Plan</h3>
+          {/* Change Logs Sidebar - Takes up 1/4 of width */}
+          <div className="col-span-1 space-y-4 overflow-y-auto">
+            <h3 className="text-lg font-semibold">Change Logs</h3>
+            
+            {/* New Addition Drawings - A2.1 Section */}
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-blue-700">New Addition Drawings</h4>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs text-gray-600">A2.1 - 5 : Level 1 Reflected Ceiling Plan</p>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsNewAdditionsOpen(!isNewAdditionsOpen)}
-                  className="p-1 h-auto text-gray-600 hover:bg-blue-100"
+                  className="p-1 h-auto text-gray-600"
                 >
-                  {isNewAdditionsOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  {isNewAdditionsOpen ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                 </Button>
               </div>
               
               {isNewAdditionsOpen && (
-                <div className="overflow-x-auto pb-4">
-              <div className="flex gap-4 min-w-max">
-                {comparisonDiffs.filter(diff => diff.status === 'review' && diff.id === 999).map((diff) => (
-                <div 
-                  key={diff.id}
-                  className={`flex-shrink-0 w-80 border rounded-lg bg-white cursor-pointer transition-all hover:shadow-md ${
-                    selectedChangeLog?.id === diff.id ? 'ring-2 ring-blue-500 shadow-lg' : ''
-                  }`}
-                  onClick={() => setSelectedChangeLog(diff)}
-                >
-                  {/* Log Header */}
-                  <div className="p-4 border-b">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <FileText className="h-4 w-4" />
-                          <span className="font-medium text-sm">
-                            {diff.originalSheet ? 
-                              `${diff.originalSheet.code} → ${diff.currentSheet.code}` : 
-                              `NEW: ${diff.currentSheet.code}`
-                            }
-                          </span>
-                        </div>
-                        <div className="flex flex-wrap gap-1 mb-2">
-                          {diff.hasAdditions && (
-                            <Badge variant="secondary" className={`bg-blue-100 text-blue-700 text-xs`}>
-                              Additions
-                            </Badge>
-                          )}
-                        </div>
+                <div className="space-y-2">
+                  {comparisonDiffs.filter(diff => diff.status === 'review' && diff.id === 999).map((diff) => (
+                    <div 
+                      key={diff.id}
+                      className={`p-3 border rounded cursor-pointer transition-all hover:shadow-sm ${
+                        selectedChangeLog?.id === diff.id ? 'ring-2 ring-blue-500 bg-blue-50' : 'bg-white hover:bg-gray-50'
+                      }`}
+                      onClick={() => setSelectedChangeLog(diff)}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <FileText className="h-3 w-3" />
+                        <span className="text-xs font-medium">NEW: {diff.currentSheet.code}</span>
+                      </div>
+                      <h5 className="text-xs font-medium line-clamp-2">{diff.title}</h5>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        <Badge variant="secondary" className="bg-blue-100 text-blue-700 text-xs">
+                          Addition
+                        </Badge>
                       </div>
                     </div>
-                    <h4 className="font-medium text-sm mb-1 line-clamp-2">{diff.title}</h4>
-                    <p className="text-xs text-gray-600 line-clamp-3">{diff.description}</p>
-                  </div>
-
-                  {/* Preview Image */}
-                  <div className="p-4 pt-3">
-                    {/* Show grayed out original and current for Level 1 Reflected Ceiling Plan */}
-                    {diff.id === 999 ? (
-                      <div className="grid grid-cols-2 gap-2 aspect-[3/1]">
-                        <div className="bg-gray-200 rounded overflow-hidden">
-                          <div className="text-xs text-gray-500 px-2 py-1 bg-gray-300">Before</div>
-                          <div className="aspect-square bg-gray-300 flex items-center justify-center">
-                            <span className="text-gray-500 text-xs">No Original</span>
-                          </div>
-                        </div>
-                        <div className="bg-green-50 rounded overflow-hidden">
-                          <div className="text-xs text-green-700 px-2 py-1 bg-green-100">After</div>
-                          <div className="aspect-square bg-gray-100 flex items-center justify-center">
-                            <img 
-                              src="/display_centre_1.png" 
-                              alt={diff.title} 
-                              className="max-w-full max-h-full object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      /* Before/After Comparisons for all other changes */
-                      <div className="grid grid-cols-2 gap-2 aspect-[3/1]">
-                        <div className="bg-red-50 rounded overflow-hidden">
-                          <div className="text-xs text-red-700 px-2 py-1 bg-red-100">Before</div>
-                          <div className="aspect-square bg-gray-100 flex items-center justify-center">
-                            <img 
-                              src={diff.title?.includes("Bedroom 1") ? "/OLD_1.png" : 
-                                   diff.title?.includes("Callout Change") ? "/old_2.png" :
-                                   diff.title?.includes("Window Wall") ? "/old_3.png" : "/OLD_1.png"}
-                              alt="Before" 
-                              className="max-w-full max-h-full object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="bg-green-50 rounded overflow-hidden">
-                          <div className="text-xs text-green-700 px-2 py-1 bg-green-100">After</div>
-                          <div className="aspect-square bg-gray-100 flex items-center justify-center">
-                            <img 
-                              src={diff.title?.includes("Bedroom 1") ? "/NEW_1.png" : 
-                                   diff.title?.includes("Callout Change") ? "/new_2.png" :
-                                   diff.title?.includes("Window Wall") ? "/new_3.png" : "/NEW_1.png"}
-                              alt="After" 
-                              className="max-w-full max-h-full object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Subcontractors */}
-                  {diff.subcontractorsToNotify && diff.subcontractorsToNotify.length > 0 && (
-                    <div className="px-4 pb-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="text-xs font-medium text-orange-700">Notify Contractors:</div>
-                        <select 
-                          className="text-xs border rounded px-2 py-1 bg-white"
-                          onChange={(e) => {
-                            if (e.target.value && !diff.subcontractorsToNotify?.some(s => s.trade === e.target.value)) {
-                              const updatedDiffs = comparisonDiffs.map(d => 
-                                d.id === diff.id ? { 
-                                  ...d, 
-                                  subcontractorsToNotify: [
-                                    ...(d.subcontractorsToNotify || []),
-                                    { trade: e.target.value, reason: "Review changes and update work accordingly." }
-                                  ]
-                                } : d
-                              )
-                              setComparisonDiffs(updatedDiffs)
-                              e.target.value = ""
-                            }
-                          }}
-                          defaultValue=""
-                        >
-                          <option value="">+ Add Contractor</option>
-                          <option value="Electrical">Electrical</option>
-                          <option value="Framing/Drywall">Framing/Drywall</option>
-                          <option value="Mechanical/HVAC">Mechanical/HVAC</option>
-                          <option value="Fire Sprinkler">Fire Sprinkler</option>
-                          <option value="Plumbing">Plumbing</option>
-                          <option value="Glazing/Windows">Glazing/Windows</option>
-                          <option value="Roofing">Roofing</option>
-                          <option value="Casework">Casework</option>
-                          <option value="Paint/Finishes">Paint/Finishes</option>
-                          <option value="Low-Voltage/FA">Low-Voltage/FA</option>
-                          <option value="Ceilings/Framing">Ceilings/Framing</option>
-                          <option value="Envelope/Waterproofing">Envelope/Waterproofing</option>
-                        </select>
-                      </div>
-                      <div className="space-y-2">
-                        {diff.subcontractorsToNotify.map((notify, idx) => (
-                          <div key={idx} className="group">
-                            <div className="flex items-start gap-2 bg-orange-50 rounded border border-orange-200 p-2">
-                              <div className="flex-1">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-xs font-medium text-orange-800">{notify.trade}</span>
-                                  <button
-                                    onClick={() => {
-                                      const updatedDiffs = comparisonDiffs.map(d => 
-                                        d.id === diff.id ? { 
-                                          ...d, 
-                                          subcontractorsToNotify: d.subcontractorsToNotify?.filter((_, index) => index !== idx) || []
-                                        } : d
-                                      )
-                                      setComparisonDiffs(updatedDiffs)
-                                    }}
-                                    className="text-orange-400 hover:text-red-600 transition-colors p-1 hover:bg-red-50 rounded"
-                                  >
-                                    <X className="h-3 w-3" />
-                                  </button>
-                                </div>
-                                <div className="text-xs text-orange-700 mt-1">{notify.reason}</div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Add contractors section if none exist */}
-                  {(!diff.subcontractorsToNotify || diff.subcontractorsToNotify.length === 0) && (
-                    <div className="px-4 pb-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="text-xs font-medium text-gray-600">Notify Contractors:</div>
-                        <select 
-                          className="text-xs border rounded px-2 py-1 bg-white"
-                          onChange={(e) => {
-                            if (e.target.value) {
-                              const updatedDiffs = comparisonDiffs.map(d => 
-                                d.id === diff.id ? { 
-                                  ...d, 
-                                  subcontractorsToNotify: [
-                                    { trade: e.target.value, reason: "Review changes and update work accordingly." }
-                                  ]
-                                } : d
-                              )
-                              setComparisonDiffs(updatedDiffs)
-                              e.target.value = ""
-                            }
-                          }}
-                          defaultValue=""
-                        >
-                          <option value="">+ Add Contractor</option>
-                          <option value="Electrical">Electrical</option>
-                          <option value="Framing/Drywall">Framing/Drywall</option>
-                          <option value="Mechanical/HVAC">Mechanical/HVAC</option>
-                          <option value="Fire Sprinkler">Fire Sprinkler</option>
-                          <option value="Plumbing">Plumbing</option>
-                          <option value="Glazing/Windows">Glazing/Windows</option>
-                          <option value="Roofing">Roofing</option>
-                          <option value="Casework">Casework</option>
-                          <option value="Paint/Finishes">Paint/Finishes</option>
-                          <option value="Low-Voltage/FA">Low-Voltage/FA</option>
-                          <option value="Ceilings/Framing">Ceilings/Framing</option>
-                          <option value="Envelope/Waterproofing">Envelope/Waterproofing</option>
-                        </select>
-                      </div>
-                      <div className="text-xs text-gray-500 italic">No contractors assigned yet</div>
-                    </div>
-                  )}
-
-                  {/* Action Buttons */}
-                  {/* <div className="p-4 pt-0 flex gap-2">
-                    <Button size="sm" className="flex-1 bg-green-600 hover:bg-green-700 text-xs">
-                      ✅ Accept
-                    </Button>
-                    <Button size="sm" variant="destructive" className="flex-1 text-xs">
-                      ❌ Remove
-                    </Button>
-                  </div> */}
+                  ))}
                 </div>
-              ))}
-                </div>
-              </div>
               )}
             </div>
-          
-          {/* Changes to Existing Drawings Section - 75% width */}
-          <div className="w-3/4 space-y-3 bg-green-50 p-4 rounded">
-            <h4 className="text-md font-medium text-green-700 border-b border-green-200 pb-1">Changes to Existing Drawings</h4>
-            <div className="flex items-center justify-between mt-2 mb-3">
-              <div className="flex items-center gap-2">
-                <h3 className="text-lg font-semibold text-gray-800">Level 1 - Base Bid</h3>
+            
+            {/* A6.2 Window Sill Detail Section */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs text-gray-600">A6.2 - 6 : Window Sill Detail</p>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
-                  onClick={() => {
-                    // Create a mock comparison diff for "View All"
-                    const viewAllDiff: ComparisonDiff = {
-                      id: 9999,
-                      title: "Complete Level 1 - Base Bid Overview",
-                      description: "Full comparison view of all changes in Level 1 Base Bid drawings",
-                      status: "review",
-                      hasAdditions: false,
-                      hasDeletions: false,
-                      currentSheet: sheets.find(s => s.code === "A2.1" && s.documentId === 7)!,
-                      subcontractorsToNotify: []
-                    };
-                    setSelectedChangeLog(viewAllDiff);
-                  }}
-                  className="text-xs px-2 py-1 h-auto text-green-700 border-green-300 hover:bg-green-100"
+                  onClick={() => setIsA62DetailsOpen(!isA62DetailsOpen)}
+                  className="p-1 h-auto text-gray-600"
                 >
-                  View All
+                  {isA62DetailsOpen ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                 </Button>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsExistingChangesOpen(!isExistingChangesOpen)}
-                className="p-1 h-auto text-gray-600 hover:bg-green-100"
-              >
-                {isExistingChangesOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-              </Button>
+              
+              {isA62DetailsOpen && (
+                <div className="space-y-2">
+                  {comparisonDiffs.filter(diff => diff.status === 'review' && diff.id === 997).map((diff) => (
+                    <div 
+                      key={diff.id}
+                      className={`p-3 border rounded cursor-pointer transition-all hover:shadow-sm ${
+                        selectedChangeLog?.id === diff.id ? 'ring-2 ring-blue-500 bg-blue-50' : 'bg-white hover:bg-gray-50'
+                      }`}
+                      onClick={() => setSelectedChangeLog(diff)}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <FileText className="h-3 w-3" />
+                        <span className="text-xs font-medium">NEW: {diff.currentSheet.code}</span>
+                      </div>
+                      <h5 className="text-xs font-medium line-clamp-2">{diff.title}</h5>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        <Badge variant="secondary" className="bg-blue-100 text-blue-700 text-xs">
+                          Addition
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             
-            {isExistingChangesOpen && (
-              <div className="overflow-x-auto pb-4">
-              <div className="flex gap-4 min-w-max">
-                {comparisonDiffs.filter(diff => diff.status === 'review' && diff.id !== 999).map((diff, index) => {
-                  // Determine the category for each change
-                  const category = index === 0 ? 'additions' : index === 1 ? 'modifications' : 'additions';
-                  const badgeColor = category === 'additions' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700';
-                  
-                  return (
-                <div 
-                  key={diff.id}
-                  className={`flex-shrink-0 w-80 border rounded-lg bg-white cursor-pointer transition-all hover:shadow-md ${
-                    selectedChangeLog?.id === diff.id ? 'ring-2 ring-blue-500 shadow-lg' : ''
-                  }`}
-                  onClick={() => setSelectedChangeLog(diff)}
-                >
-                  {/* Log Header */}
-                  <div className="p-4 border-b">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <FileText className="h-4 w-4" />
-                          <span className="font-medium text-sm">
-                            {diff.originalSheet ? 
-                              `A2.1-13` : 
-                              `A2.1-5`
-                            }
-                          </span>
-                        </div>
-                        <div className="flex flex-wrap gap-1 mb-2">
-                          {!diff.originalSheet && (
-                            <Badge variant="secondary" className="bg-blue-100 text-blue-700 text-xs">
-                              NEW ADDITION
-                            </Badge>
-                          )}
-                          {diff.hasAdditions && (
-                            <Badge variant="secondary" className={`${badgeColor} text-xs`}>
-                              {category === 'additions' ? 'Additions' : 'Modifications'}
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <h4 className="font-medium text-sm mb-1 line-clamp-2">{diff.title}</h4>
-                    <p className="text-xs text-gray-600 line-clamp-3">{diff.description}</p>
-                  </div>
-
-                  {/* Preview Image */}
-                  <div className="p-4 pt-3">
-                    {/* Show single centered image for Level 1 Reflected Ceiling Plan */}
-                    {diff.id === 999 ? (
-                      <div className="aspect-[3/2] bg-gray-100 rounded overflow-hidden flex items-center justify-center">
-                        <img 
-                          src="/display_centre_1.png" 
-                          alt={diff.title} 
-                          className="max-w-full max-h-full object-contain"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      /* Before/After Comparisons for modifications */
-                      <div className="grid grid-cols-2 gap-2 aspect-[3/1]">
-                        <div className="bg-red-50 rounded overflow-hidden">
-                          <div className="text-xs text-red-700 px-2 py-1 bg-red-100">Before</div>
-                          <div className="aspect-square bg-gray-100 flex items-center justify-center">
-                            <img 
-                              src={diff.title?.includes("Bedroom 1") ? "/OLD_1.png" : 
-                                   diff.title?.includes("Callout Change") ? "/old_2.png" :
-                                   diff.title?.includes("Window Wall") ? "/old_3.png" : "/OLD_1.png"}
-                              alt="Before" 
-                              className="max-w-full max-h-full object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="bg-green-50 rounded overflow-hidden">
-                          <div className="text-xs text-green-700 px-2 py-1 bg-green-100">After</div>
-                          <div className="aspect-square bg-gray-100 flex items-center justify-center">
-                            <img 
-                              src={diff.title?.includes("Bedroom 1") ? "/NEW_1.png" : 
-                                   diff.title?.includes("Callout Change") ? "/new_2.png" :
-                                   diff.title?.includes("Window Wall") ? "/new_3.png" : "/NEW_1.png"}
-                              alt="After" 
-                              className="max-w-full max-h-full object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Subcontractors */}
-                  {diff.subcontractorsToNotify && diff.subcontractorsToNotify.length > 0 && (
-                    <div className="px-4 pb-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="text-xs font-medium text-orange-700">Notify Contractors:</div>
-                        <select 
-                          className="text-xs border rounded px-2 py-1 bg-white"
-                          onChange={(e) => {
-                            if (e.target.value && !diff.subcontractorsToNotify?.some(s => s.trade === e.target.value)) {
-                              const updatedDiffs = comparisonDiffs.map(d => 
-                                d.id === diff.id ? { 
-                                  ...d, 
-                                  subcontractorsToNotify: [
-                                    ...(d.subcontractorsToNotify || []),
-                                    { trade: e.target.value, reason: "Review changes and update work accordingly." }
-                                  ]
-                                } : d
-                              )
-                              setComparisonDiffs(updatedDiffs)
-                              e.target.value = ""
-                            }
-                          }}
-                          defaultValue=""
-                        >
-                          <option value="">+ Add Contractor</option>
-                          <option value="Electrical">Electrical</option>
-                          <option value="Framing/Drywall">Framing/Drywall</option>
-                          <option value="Mechanical/HVAC">Mechanical/HVAC</option>
-                          <option value="Fire Sprinkler">Fire Sprinkler</option>
-                          <option value="Plumbing">Plumbing</option>
-                          <option value="Glazing/Windows">Glazing/Windows</option>
-                          <option value="Roofing">Roofing</option>
-                          <option value="Casework">Casework</option>
-                          <option value="Paint/Finishes">Paint/Finishes</option>
-                          <option value="Low-Voltage/FA">Low-Voltage/FA</option>
-                          <option value="Ceilings/Framing">Ceilings/Framing</option>
-                          <option value="Envelope/Waterproofing">Envelope/Waterproofing</option>
-                        </select>
-                      </div>
-                      <div className="space-y-2">
-                        {diff.subcontractorsToNotify.map((notify, idx) => (
-                          <div key={idx} className="group">
-                            <div className="flex items-start gap-2 bg-orange-50 rounded border border-orange-200 p-2">
-                              <div className="flex-1">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-xs font-medium text-orange-800">{notify.trade}</span>
-                                  <button
-                                    onClick={() => {
-                                      const updatedDiffs = comparisonDiffs.map(d => 
-                                        d.id === diff.id ? { 
-                                          ...d, 
-                                          subcontractorsToNotify: d.subcontractorsToNotify?.filter((_, index) => index !== idx) || []
-                                        } : d
-                                      )
-                                      setComparisonDiffs(updatedDiffs)
-                                    }}
-                                    className="text-orange-400 hover:text-red-600 transition-colors p-1 hover:bg-red-50 rounded"
-                                  >
-                                    <X className="h-3 w-3" />
-                                  </button>
-                                </div>
-                                <div className="text-xs text-orange-700 mt-1">{notify.reason}</div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Add contractors section if none exist */}
-                  {(!diff.subcontractorsToNotify || diff.subcontractorsToNotify.length === 0) && (
-                    <div className="px-4 pb-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="text-xs font-medium text-gray-600">Notify Contractors:</div>
-                        <select 
-                          className="text-xs border rounded px-2 py-1 bg-white"
-                          onChange={(e) => {
-                            if (e.target.value) {
-                              const updatedDiffs = comparisonDiffs.map(d => 
-                                d.id === diff.id ? { 
-                                  ...d, 
-                                  subcontractorsToNotify: [
-                                    { trade: e.target.value, reason: "Review changes and update work accordingly." }
-                                  ]
-                                } : d
-                              )
-                              setComparisonDiffs(updatedDiffs)
-                              e.target.value = ""
-                            }
-                          }}
-                          defaultValue=""
-                        >
-                          <option value="">+ Add Contractor</option>
-                          <option value="Electrical">Electrical</option>
-                          <option value="Framing/Drywall">Framing/Drywall</option>
-                          <option value="Mechanical/HVAC">Mechanical/HVAC</option>
-                          <option value="Fire Sprinkler">Fire Sprinkler</option>
-                          <option value="Plumbing">Plumbing</option>
-                          <option value="Glazing/Windows">Glazing/Windows</option>
-                          <option value="Roofing">Roofing</option>
-                          <option value="Casework">Casework</option>
-                          <option value="Paint/Finishes">Paint/Finishes</option>
-                          <option value="Low-Voltage/FA">Low-Voltage/FA</option>
-                          <option value="Ceilings/Framing">Ceilings/Framing</option>
-                          <option value="Envelope/Waterproofing">Envelope/Waterproofing</option>
-                        </select>
-                      </div>
-                      <div className="text-xs text-gray-500 italic">No contractors assigned yet</div>
-                    </div>
-                  )}
+            {/* Changes to Existing Drawings */}
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-green-700">Changes to Existing Drawings</h4>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs text-gray-600">A2.1 - 13 : Level 1 - Base Bid</p>
+                <div className="flex items-center gap-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      const viewAllDiff: ComparisonDiff = {
+                        id: 9999,
+                        title: "Complete Level 1 - Base Bid Overview",
+                        description: "Full comparison view of all changes in Level 1 Base Bid drawings",
+                        status: "review",
+                        hasAdditions: false,
+                        hasDeletions: false,
+                        currentSheet: sheets.find(s => s.code === "A2.1" && s.documentId === 7)!,
+                        subcontractorsToNotify: []
+                      };
+                      setSelectedChangeLog(viewAllDiff);
+                    }}
+                    className="text-xs px-2 py-1 h-auto text-green-700 border-green-300 hover:bg-green-100"
+                  >
+                    View All
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsExistingChangesOpen(!isExistingChangesOpen)}
+                    className="p-1 h-auto text-gray-600"
+                  >
+                    {isExistingChangesOpen ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                  </Button>
                 </div>
-                  )
-                })}
               </div>
-              </div>
+              
+              {isExistingChangesOpen && (
+                <div className="space-y-2">
+                  {comparisonDiffs.filter(diff => diff.status === 'review' && diff.id !== 999 && diff.id !== 997).map((diff, index) => {
+                    const category = (diff.id === 995 || diff.id === 993) ? 'modifications' : 
+                                   index === 0 ? 'additions' : index === 1 ? 'modifications' : 'additions';
+                    const badgeColor = category === 'additions' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700';
+                    
+                    return (
+                      <div 
+                        key={diff.id}
+                        className={`p-3 border rounded cursor-pointer transition-all hover:shadow-sm ${
+                          selectedChangeLog?.id === diff.id ? 'ring-2 ring-blue-500 bg-blue-50' : 'bg-white hover:bg-gray-50'
+                        }`}
+                        onClick={() => setSelectedChangeLog(diff)}
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <FileText className="h-3 w-3" />
+                          <span className="text-xs font-medium">A2.1-13</span>
+                        </div>
+                        <h5 className="text-xs font-medium line-clamp-2">{diff.title}</h5>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          <Badge variant="secondary" className={`${badgeColor} text-xs`}>
+                            {category === 'additions' ? 'Addition' : 'Modification'}
+                          </Badge>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               )}
             </div>
           </div>
         </div>
+
+        {/* Selected Change Log Details - Below comparison window */}
+        {selectedChangeLog && (
+          <div className="border rounded-lg bg-white p-6 space-y-4">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <FileText className="h-5 w-5" />
+                  <span className="font-medium">
+                    {selectedChangeLog.originalSheet ? 
+                      `${selectedChangeLog.originalSheet.code} → ${selectedChangeLog.currentSheet.code}` : 
+                      `NEW: ${selectedChangeLog.currentSheet.code}`
+                    }
+                  </span>
+                </div>
+                <h4 className="font-semibold text-lg mb-2">{selectedChangeLog.title}</h4>
+                <p className="text-gray-700 mb-4">{selectedChangeLog.description}</p>
+                
+                {/* Subcontractors to Notify */}
+                {selectedChangeLog.subcontractorsToNotify && selectedChangeLog.subcontractorsToNotify.length > 0 && (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 mb-3">
+                      <h5 className="font-medium text-orange-700">Notify Contractors:</h5>
+                      <select 
+                        className="text-sm border rounded px-3 py-1 bg-white"
+                        onChange={(e) => {
+                          if (e.target.value && !selectedChangeLog.subcontractorsToNotify?.some(s => s.trade === e.target.value)) {
+                            const updatedDiffs = comparisonDiffs.map(d => 
+                              d.id === selectedChangeLog.id ? { 
+                                ...d, 
+                                subcontractorsToNotify: [
+                                  ...(d.subcontractorsToNotify || []),
+                                  { trade: e.target.value, reason: "Review changes and update work accordingly." }
+                                ]
+                              } : d
+                            )
+                            setComparisonDiffs(updatedDiffs)
+                            // Update selectedChangeLog state as well
+                            const updatedSelected = updatedDiffs.find(d => d.id === selectedChangeLog.id)
+                            if (updatedSelected) setSelectedChangeLog(updatedSelected)
+                            e.target.value = ""
+                          }
+                        }}
+                        defaultValue=""
+                      >
+                        <option value="">+ Add Contractor</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Framing/Drywall">Framing/Drywall</option>
+                        <option value="Mechanical/HVAC">Mechanical/HVAC</option>
+                        <option value="Fire Sprinkler">Fire Sprinkler</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Glazing/Windows">Glazing/Windows</option>
+                        <option value="Roofing">Roofing</option>
+                        <option value="Casework">Casework</option>
+                        <option value="Paint/Finishes">Paint/Finishes</option>
+                        <option value="Low-Voltage/FA">Low-Voltage/FA</option>
+                        <option value="Ceilings/Framing">Ceilings/Framing</option>
+                        <option value="Envelope/Waterproofing">Envelope/Waterproofing</option>
+                      </select>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedChangeLog.subcontractorsToNotify.map((notify, idx) => (
+                        <div key={idx} className="bg-orange-50 rounded border border-orange-200 px-3 py-2 flex items-center gap-2">
+                          <span className="text-sm font-medium text-orange-800">{notify.trade}</span>
+                          <button
+                            onClick={() => {
+                              const updatedDiffs = comparisonDiffs.map(d => 
+                                d.id === selectedChangeLog.id ? { 
+                                  ...d, 
+                                  subcontractorsToNotify: d.subcontractorsToNotify?.filter((_, index) => index !== idx) || []
+                                } : d
+                              )
+                              setComparisonDiffs(updatedDiffs)
+                              // Update selectedChangeLog state as well
+                              const updatedSelected = updatedDiffs.find(d => d.id === selectedChangeLog.id)
+                              if (updatedSelected) setSelectedChangeLog(updatedSelected)
+                            }}
+                            className="text-orange-400 hover:text-red-600 transition-colors hover:bg-red-50 rounded"
+                            title={notify.reason}
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </SidebarInset>
   )
